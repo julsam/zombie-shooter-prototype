@@ -1,0 +1,24 @@
+<project>
+	<name>project</name>
+	<settings>
+		<defaultWidth>640</defaultWidth>
+		<defaultHeight>480</defaultHeight>
+		<maxWidth>4096</maxWidth>
+		<maxHeight>2048</maxHeight>
+		<minWidth>640</minWidth>
+		<minHeight>480</minHeight>
+		<workingDirectory>../gfx</workingDirectory>
+	</settings> 
+	<tilesets>
+		<tileset name="tileset" image="tileset.png" tileWidth="32" tileHeight="32"/>
+	</tilesets> 
+	<objects>
+		<object name="playerStart" image="playerStart.png" width="32" height="32" limit="1"/>
+	</objects> 
+	<layers>
+		<grid name="solids" gridSize="32" drawGridSize="32" exportAsObjects="true" />
+		<tiles name="tilesAbove" gridSize="32" drawGridSize="32" exportTileSize="true" />
+		<tiles name="tilesAboveDeco" gridSize="32" drawGridSize="32" exportTileSize="true" />
+		<objects name="objects" gridSize="32"/>
+	</layers>
+</project>
