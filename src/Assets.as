@@ -12,8 +12,7 @@ package
 		[Embed(source = '../assets/gfx/tilesetCave.png')] 
 		public static const TILESET:Class;
 		
-		
-		[Embed(source = '../assets/gfx/playerStart.png')] 
+		[Embed(source = '../assets/gfx/player.png')] 
 		public static const PLAYER:Class;
 		
 		[Embed(source = '../assets/gfx/light.png')] 

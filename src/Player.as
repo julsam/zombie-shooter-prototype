@@ -8,6 +8,7 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
@@ -21,14 +22,27 @@ package
 		private var MAXSPEED:int = 125; 
 		
 		private var image:Image;
+		public var sprite:Spritemap;
 		
 		public function Player(x:int=100, y:int=100)
 		{
 			this.x = x;
 			this.y = y;
 			vector = new Point(0, 0);
-			graphic	= new Image(Assets.PLAYER);
-			setHitbox(28, 28, 14, 14);
+			
+			sprite = new Spritemap(Assets.PLAYER, 11, 16);
+			sprite.add("standDown", [0]);
+			sprite.add("standRight", [8]);
+			sprite.add("standUp", [6]);
+			sprite.add("standLeft", [10]);
+			sprite.add("walkDown", [4, 0, 5, 0], 7, true);
+			sprite.add("walkUp", [6, 1, 7, 1], 7, true);
+			sprite.add("walkRight", [8, 2, 9, 2], 7, true);
+			sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
+			sprite.play("standDown");
+			
+			setHitbox(8, 10, -1, -2);
+			graphic	= sprite;
 			
 			type = "Player";
 			
@@ -40,7 +54,6 @@ package
 			// Shoot
 			if(Input.mousePressed)
 			{
-				trace(Input.mouseX, Input.mouseY);
 				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
 			}
 			
@@ -59,7 +72,32 @@ package
 			
 			//image.angle = FP.angle(this.x + (image.width / 2), this.y + (image.height / 2), Input.mouseX, Input.mouseY);
 			// because of centerOrigin() x, y is the new center of the image
-			image.angle = FP.angle(this.x, this.y, Input.mouseX, Input.mouseY);
+			//image.angle = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+			var axe:Number = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+			trace(axe);
+			var dirAnim:String;
+			if (axe >= 225 && axe <= 315)
+			{
+				dirAnim = "Down";
+			}
+			if (axe >= 315 || axe <= 45)
+			{
+				dirAnim = "Right";
+			}
+			if (axe >= 45 && axe <= 135)
+			{
+				dirAnim = "Up";
+			}
+			if (axe >= 135 && axe <= 225)
+			{
+				dirAnim = "Left";
+			}
+			
+			if (Input.check("Up") || Input.check("Down") || Input.check("Left") || Input.check("Right"))
+				dirAnim = "walk"+dirAnim;
+			else
+				dirAnim = "stand"+dirAnim;
+			sprite.play(dirAnim);
 		}
 		
 		
