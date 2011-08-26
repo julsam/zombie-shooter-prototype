@@ -40,8 +40,10 @@ package
 			// Shoot
 			if(Input.mousePressed)
 			{
-				FP.world.add(new Bullet(x, y, new Point(Input.mouseX, Input.mouseY)));
+				trace(Input.mouseX, Input.mouseY);
+				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
 			}
+			
 			// Run
 			if(Input.check("Run"))
 			{
