@@ -3,14 +3,17 @@ package
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	
+	[SWF(width="640", height="480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
-		[SWF(width="640", height="480", backgroundColor="#000000")]		
 		public function Main():void 
 		{
-			super(640, 480, 60, true);
-			FP.screen.scale = 1;
-			FP.screen.color = 0xa0d0f0;		
+			super(320, 240, 60, true);
+			FP.screen.scale = 2;
+			//super(213, 160, 60, true);
+			//FP.screen.scale = 3;
+			
+			FP.screen.color = 0x000000;		
 			FP.console.enable();	
 		}
 		

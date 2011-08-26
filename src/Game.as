@@ -14,6 +14,11 @@ package
 	public class Game extends World
 	{
 		public var tileset:Tilemap;
+		public var tilesRoof:Tilemap;
+		public var roof:Entity;
+		
+		public var lighting:Lighting;
+		public var lightMouse:Light
 		
 		override public function begin():void
 		{
@@ -27,14 +32,28 @@ package
 			Input.define("Down", Key.DOWN, Key.S);
 			Input.define("Run", Key.SHIFT);
 			
-			//add(G.player = new Player());
+			//create the lighting
+			add(lighting = new Lighting());
 			
 			loadLevel();
+			
+			//add the lights to the screen
+			lighting.add(new Light(20, 20, 1, 1));
+			lighting.add(lightMouse = new Light(0, 0, 4, 1));
+			
+			//also, just for the fun of it, lets through in a bunch of random alpha and scale
+			for (var i:int = 0; i < 20; i ++)
+			{
+				//lighting.add(new Light(Math.random() * FP.width, Math.random() * FP.height, Math.random(), Math.random()));
+			}
 		}
 		
 		override public function update():void
-		{			
+		{
 			super.update();
+			
+			lightMouse.x = G.player.x;
+			lightMouse.y = G.player.y;
 		}
 		
 		public function loadLevel():void 
@@ -51,19 +70,26 @@ package
 			FP.width = xml.width;
 			FP.height = xml.height;
 			
+			// roofs
+			roof = new Entity()
+			tilesRoof = new Tilemap(Assets.TILESET, FP.width, FP.height, G.grid, G.grid);
+			roof.graphic = tilesRoof;
+			roof.layer = -8;
+			FP.world.add(roof);
 			
+			// Tiles
 			add(new Entity(0, 0, tileset = new Tilemap(Assets.TILESET, FP.width, FP.height, G.grid, G.grid)));
 			
 			// Player
 			add(G.player = new Player(xml.objects[0].playerStart.@x, xml.objects[0].playerStart.@y));
 						
 			// Camera
-			//add(Global.camera = new Camera(Global.player as Entity));
+			add(G.camera = new Camera(G.player as Entity));
 			
 			// Tiles Above
-			for each (o in xml.tilesAbove[0].tile) {
+			for each (o in xml.cave[0].tile) {
 				// 17 = number of column
-				tileset.setTile(o.@x / G.grid, o.@y / G.grid, (2 * (o.@ty/G.grid)) + (o.@tx/G.grid));
+				tileset.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 			}
 			
 			// Solids
@@ -71,12 +97,20 @@ package
 				add(new Solid(o.@x, o.@y, o.@w, o.@h));
 			}
 			
-			// Tiles Above Deco
-			if (xml.tilesAboveDeco[0])
+			// lights
+			if (G.lightingEnabled)
 			{
-				for each (o in xml.tilesAboveDeco[0].tile) {
+				for each (o in xml.objects[0].fire) {
+					lighting.add(new Light(o.@x, o.@y, 1.3, 0.95));
+				}
+			}
+			
+			// Tiles Above Deco
+			if (xml.roof[0])
+			{
+				for each (o in xml.roof[0].tile) {
 					// 17 = number of column
-					tileset.setTile(o.@x / G.grid, o.@y / G.grid, (17 * (o.@ty/G.grid)) + (o.@tx/G.grid));
+					tilesRoof.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 				}
 			}
 		}
