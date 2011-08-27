@@ -17,5 +17,8 @@ package
 		
 		[Embed(source = '../assets/gfx/light.png')] 
 		public static const LIGHT:Class;
+		
+		[Embed(source = '../assets/gfx/shadowSpot.png')] 
+		public static const SHADOW:Class;
 	}
 }

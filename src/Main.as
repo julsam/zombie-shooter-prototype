@@ -8,13 +8,13 @@ package
 	{
 		public function Main():void 
 		{
-			super(320, 240, 60, true);
+			super(320, 240, 60, false);
 			FP.screen.scale = 2;
-			//super(213, 160, 60, true);
+			//super(213, 160, 60, false);
 			//FP.screen.scale = 3;
 			
-			FP.screen.color = 0x000000;		
-			FP.console.enable();	
+			FP.screen.color = 0x000000;
+			FP.console.enable();
 		}
 		
 		override public function init():void

@@ -19,10 +19,11 @@
 	<objects>
 		<object name="playerStart" image="playerStart.png" width="16" height="16" limit="1" />
 		<object name="fire" image="placeFeu.png" width="16" height="16" />
+		<object name="shadowSpot" image="placeShadowSpot.png" width="16" height="16" />
 	</objects>
 	
 	<layers>
-		<grid name="solids" gridSize="4" exportAsObjects="true" />
+		<grid name="solids" gridSize="8" exportAsObjects="true" />
 		<tiles name="cave" gridSize="8" exportAsObjects="false" />
 		<objects name="objects" gridSize="16" />
 		<tiles name="roof" gridSize="8" />

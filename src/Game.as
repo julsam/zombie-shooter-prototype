@@ -1,5 +1,7 @@
 package
-{
+{	
+	import flash.display.BitmapData;
+	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
 	import net.flashpunk.Entity;
@@ -18,8 +20,8 @@ package
 		public var roof:Entity;
 		
 		public var lighting:Lighting;
-		public var lightMouse:Light
-		
+		public var lightPlayer:Light
+				
 		override public function begin():void
 		{
 			// level size
@@ -38,22 +40,23 @@ package
 			loadLevel();
 			
 			//add the lights to the screen
-			lighting.add(new Light(20, 20, 1, 1));
-			lighting.add(lightMouse = new Light(0, 0, 4, 1));
+			lighting.addLight(new Light(20, 20, 1, 1));
+			lighting.addLight(lightPlayer = new Light(G.player.x, G.player.y, 1, 1));
 			
 			//also, just for the fun of it, lets through in a bunch of random alpha and scale
 			for (var i:int = 0; i < 20; i ++)
 			{
 				//lighting.add(new Light(Math.random() * FP.width, Math.random() * FP.height, Math.random(), Math.random()));
 			}
+			
 		}
 		
 		override public function update():void
 		{
 			super.update();
 			
-			lightMouse.x = G.player.x;
-			lightMouse.y = G.player.y;
+			lightPlayer.x = G.player.x;
+			lightPlayer.y = G.player.y;
 		}
 		
 		public function loadLevel():void 
@@ -101,7 +104,10 @@ package
 			if (G.lightingEnabled)
 			{
 				for each (o in xml.objects[0].fire) {
-					lighting.add(new Light(o.@x, o.@y, 1.3, 0.95));
+					lighting.addLight(new Light(o.@x, o.@y, 1.3, 0.95));
+				}
+				for each (o in xml.objects[0].shadowSpot) {
+					lighting.addShadow(new Shadow(o.@x, o.@y, 1.3, 0.95));
 				}
 			}
 			
