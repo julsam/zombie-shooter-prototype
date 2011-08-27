@@ -13,7 +13,7 @@
 	</settings>
 	
 	<tilesets>
-		<tileset name="tileset" image="tilesetCave.png" tileWidth="8" tileHeight="8" />
+		<tileset name="tileset" image="tileset.png" tileWidth="8" tileHeight="8" />
 	</tilesets>
 	
 	<objects>
