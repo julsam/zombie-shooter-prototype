@@ -16,10 +16,12 @@ package
 	{
 		private var vector:Point;
 		private var velocity:Point = new Point();
+		private var speed:Number;
 		
-		private var SPEED:Number = 100; 
-		private var FRICTION:int = 250; 
-		private var MAXSPEED:int = 125; 
+		private const NSPEED:Number = 100;
+		private const RSPEED:Number = 200;
+		private var FRICTION:int = 250;
+		private var MAXSPEED:int = 125;
 		
 		private var image:Image;
 		public var sprite:Spritemap;
@@ -41,13 +43,12 @@ package
 			sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
 			sprite.play("standDown");
 			
-			setHitbox(8, 10, -1, -2);
+			setHitbox(6, 8, 3, 2);
 			graphic	= sprite;
 			
-			type = "Player";
+			type = "Player";			
 			
-			image = (this.graphic as Image);
-			image.centerOrigin();
+			sprite.centerOO();
 		}
 		override public function update():void
 		{
@@ -60,21 +61,18 @@ package
 			// Run
 			if(Input.check("Run"))
 			{
-				SPEED = 200;
+				speed = RSPEED; // run speed
 			}
 			else
 			{
-				SPEED = 100;
+				speed = NSPEED; // normal speed
 			}
 			
 			updateMovement();
 			updateCollision();			
-			
-			//image.angle = FP.angle(this.x + (image.width / 2), this.y + (image.height / 2), Input.mouseX, Input.mouseY);
-			// because of centerOrigin() x, y is the new center of the image
-			//image.angle = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+						
 			var axe:Number = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
-			trace(axe);
+			
 			var dirAnim:String;
 			if (axe >= 225 && axe <= 315)
 			{
@@ -111,8 +109,8 @@ package
 			if (Input.check("Right")) movement.x++;
 			
 			
-			vector.x = SPEED * G.FIXED_FRAME_TIME * movement.x;
-			vector.y = SPEED * G.FIXED_FRAME_TIME * movement.y;
+			vector.x = speed * G.FIXED_FRAME_TIME * movement.x;
+			vector.y = speed * G.FIXED_FRAME_TIME * movement.y;
 		}
 		
 		private function updateCollision():void
@@ -145,96 +143,5 @@ package
 				}
 			}			
 		}
-		
-		
-		/*
-		override public function update():void
-		{
-		var acceleration:Point = new Point();
-		var movedX:Boolean = false;
-		var movedY:Boolean = false;
-		
-		// Shoot
-		if(Input.mousePressed)
-		{
-		FP.world.add(new Bullet(x, y, new Point(Input.mouseX, Input.mouseY)));
-		}
-		
-		// Movements
-		if(Input.check("Up")) 
-		{
-		acceleration.y -= SPEED;
-		movedY = true;
-		}
-		if(Input.check("Down"))
-		{
-		acceleration.y += SPEED;
-		movedY = true;			
-		}
-		if(Input.check("Left"))
-		{
-		acceleration.x -= SPEED;
-		movedX = true;		
-		}
-		if(Input.check("Right"))
-		{
-		acceleration.x += SPEED;
-		movedX = true;
-		}
-		
-		// Run
-		if(Input.check("Run"))
-		{
-		MAXSPEED = 250;
-		}
-		else
-		{
-		MAXSPEED = 125;
-		}
-		
-		trace("x: "+Math.abs(acceleration.x) + ", y:" + Math.abs(acceleration.x) );
-		
-		// Apply movement to velocity
-		velocity.x += acceleration.x * G.FIXED_FRAME_TIME;
-		velocity.y += acceleration.y * G.FIXED_FRAME_TIME;
-		
-		if(!movedX)
-		{
-		if(Math.abs(velocity.x) > 1)
-		{
-		velocity.x = FP.approach(velocity.x, 0, FRICTION * G.FIXED_FRAME_TIME);
-		}
-		}
-		if(!movedY)
-		{
-		if(Math.abs(velocity.y) > 1)
-		{
-		velocity.y = FP.approach(velocity.y, 0, FRICTION * G.FIXED_FRAME_TIME);
-		}
-		}
-		
-		// Max Speed
-		if (Math.abs(velocity.x) > MAXSPEED)
-		{
-		velocity.x = FP.sign(velocity.x) * MAXSPEED;
-		}
-		if (Math.abs(velocity.y) > MAXSPEED)
-		{
-		velocity.y = FP.sign(velocity.y) * MAXSPEED;
-		}
-		
-		// apply velocity to position
-		position.x += velocity.x * G.FIXED_FRAME_TIME;
-		position.y += velocity.y * G.FIXED_FRAME_TIME;
-		
-		
-		x = position.x;
-		y = position.y;
-		
-		//updateMovement();
-		//updateCollision();
-		super.update();
-		}
-		*/
 	}
 }
