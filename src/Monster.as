@@ -13,19 +13,42 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class Zombie extends Monster 
-	{		
-		public function Zombie(x:int, y:int)
+	public class Monster extends Entity 
+	{
+		protected var speed:Number;
+		protected var health:int;
+		
+		protected var image:Image;
+		protected var sprite:Spritemap;
+		
+		
+		public function Monster(x:int, y:int)
 		{
-			super(x, y);
 			this.x = x;
 			this.y = y;
 			
-			setHitbox(8, 8, 4, 4);
+			setHitbox(8, 8);
+			centerOrigin();
 			image = new Image(new BitmapData(8, 8, false, 0xffff00));
 			graphic = image;
 			
+			type = "Monster";
+			
 			image.centerOO();
+		}
+		override public function update():void
+		{			
+			super.update();
+		}
+		
+		protected function destroy():void
+		{
+			FP.world.remove(this);
+		}
+		
+		protected function takeDamage():void
+		{
+			health--;
 		}
 	}
 }

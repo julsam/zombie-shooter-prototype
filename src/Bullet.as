@@ -6,6 +6,7 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.masks.Hitbox;
 	
 	public class Bullet extends Entity
 	{
@@ -16,14 +17,18 @@ package
 		
 		public function Bullet(x:Number, y:Number, _direction:Point)
 		{
-			graphic	= new Image(new BitmapData(3, 3, false, 0x0000ff));
+			graphic	= new Image(new BitmapData(2, 2, false, 0xff0000));
+			setHitbox(2, 2);
+			centerOrigin();
 			super(x, y, graphic);
-			
-			direction = _direction;			
-						
+
+			direction = _direction;
+
 			angle = FP.angle(x, y, direction.x, direction.y);
 			
 			FP.angleXY(velocity, angle, G.FIXED_FRAME_TIME * SPEED);
+			
+			type = "Bullet";
 		}
 		
 		override public function update():void
@@ -40,14 +45,6 @@ package
 			
 			if (collide("Solid", x, y))
 			{
-				destroy();
-			}
-			
-			var e:Entity = collide("Monster", x, y) as Entity;
-			if (e)
-			{
-				var m:Zombie = e as Zombie;
-				m.destroy();
 				destroy();
 			}
 			

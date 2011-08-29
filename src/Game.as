@@ -117,7 +117,7 @@ package
 			if (xml.roof[0])
 			{
 				for each (o in xml.roof[0].tile) {
-					// 17 = number of column
+					// 8 = number of column
 					tilesRoof.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 				}
 			}
