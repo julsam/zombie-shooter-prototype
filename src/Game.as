@@ -39,6 +39,8 @@ package
 			
 			loadLevel();
 			
+			add(new Zombie(400, 150));
+			
 			//add the lights to the screen
 			lighting.addLight(new Light(20, 20, 1, 1));
 			lighting.addLight(lightPlayer = new Light(G.player.x, G.player.y, 1, 1));

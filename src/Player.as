@@ -26,7 +26,7 @@ package
 		private var image:Image;
 		public var sprite:Spritemap;
 		
-		public function Player(x:int=100, y:int=100)
+		public function Player(x:int, y:int)
 		{
 			this.x = x;
 			this.y = y;

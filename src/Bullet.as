@@ -43,6 +43,14 @@ package
 				destroy();
 			}
 			
+			var e:Entity = collide("Monster", x, y) as Entity;
+			if (e)
+			{
+				var m:Zombie = e as Zombie;
+				m.destroy();
+				destroy();
+			}
+			
 			super.update();
 		}
 				
