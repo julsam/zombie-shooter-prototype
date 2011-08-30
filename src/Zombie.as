@@ -14,18 +14,56 @@ package
 	import net.flashpunk.utils.Key;
 	
 	public class Zombie extends Monster 
-	{		
-		public function Zombie(x:int, y:int)
+	{
+		private var timer:Number = 0;
+		
+		public function Zombie(x:Number, y:Number)
 		{
 			super(x, y);
 			this.x = x;
 			this.y = y;
 			
-			setHitbox(8, 8, 4, 4);
-			image = new Image(new BitmapData(8, 8, false, 0xffff00));
-			graphic = image;
+			centerOrigin();
+			setHitbox(10, 10);
 			
-			image.centerOO();
+			sprite = new Spritemap(Assets.MONSTER1, 8, 8);
+			sprite.add("stand", [0]);
+			sprite.add("explode", [16, 17, 18, 18, 20], 5, false);
+			sprite.add("death", [20]);
+			sprite.play("stand");
+			
+			graphic = sprite;			
+			sprite.centerOO();
+			
+			health = 10;
+		}
+		
+		override public function update():void
+		{
+			// if it's dead, on the floor, stand there for a few seconds with death animation
+			if (dead && sprite.currentAnim == "death")
+			{
+				timer += FP.elapsed;
+				if( timer > 2 ) // total duration before remove()
+					FP.world.remove(this);
+				
+				return;
+			}
+			if (dead)
+			{
+				sprite.play("explode");
+			}
+			else
+			{
+				sprite.play("stand");
+			}
+			
+			if (sprite.currentAnim == "explode" && sprite.complete)
+			{	
+				//FP.world.remove(this);
+				sprite.play("death");
+			}
+			super.update();
 		}
 	}
 }

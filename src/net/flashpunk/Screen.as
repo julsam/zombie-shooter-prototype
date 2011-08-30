@@ -194,6 +194,12 @@
 		 */
 		public function get mouseY():int { return (FP.stage.mouseY - _y) / (_scaleY * _scale); }
 		
+		public function get matrix():Matrix { return _matrix; }		
+		public function set matrix(value:Matrix):void 
+		{
+			_matrix = value;
+		}
+		
 		/**
 		 * Captures the current screen as an Image object.
 		 * @return	A new Image object.

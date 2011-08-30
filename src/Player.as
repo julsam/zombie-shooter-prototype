@@ -23,7 +23,6 @@ package
 		private var FRICTION:int = 250;
 		private var MAXSPEED:int = 125;
 		
-		private var image:Image;
 		public var sprite:Spritemap;
 		
 		public function Player(x:int, y:int)

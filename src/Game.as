@@ -41,7 +41,7 @@ package
 			loadLevel();
 			
 			add(new Zombie(400, 150));
-			add(new Zombie(400, 175));
+			add(new Monster(400, 175));
 			
 			//add the lights to the screen
 			lighting.addLight(new Light(20, 20, 1, 1));

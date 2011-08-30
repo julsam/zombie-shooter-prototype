@@ -9,7 +9,7 @@ package
 	import net.flashpunk.masks.Hitbox;
 	
 	public class Bullet extends Entity
-	{
+	{		
 		private const SPEED:Number = 650;
 		private var direction:Point = new Point();
 		private var velocity:Point = new Point;

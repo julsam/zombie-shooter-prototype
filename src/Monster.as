@@ -20,31 +20,29 @@ package
 		
 		protected var image:Image;
 		protected var sprite:Spritemap;
+		protected var dead:Boolean = false;
 		
-		
-		public function Monster(x:int, y:int)
+		public function Monster(x:Number, y:Number)
 		{
 			super(x, y);
 			this.x = x;
 			this.y = y;
 			
-			setHitbox(8, 8);
 			centerOrigin();
+			setHitbox(8, 8);
 			image = new Image(new BitmapData(8, 8, false, 0xffff00));
 			graphic = image;
-			
-			type = "Monster";
-			
 			image.centerOO();
+			
+			type = "Monster";			
 		}
 		override public function update():void
 		{
 			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
 			if (b)
 			{
-				image.color = 0xff0000;
+				this.takeDamage();
 				b.destroy();
-				destroy();
 			}
 			else
 			{
@@ -60,8 +58,17 @@ package
 		}
 		
 		protected function takeDamage():void
-		{
+		{			
+			image.color = 0xff0000;
 			health--;
+			
+			FP.world.add(new EmitterEntity(x, y));
+			
+			if (health <= 0)
+			{
+				collidable = false;
+				dead = true;
+			}
 		}
 	}
 }

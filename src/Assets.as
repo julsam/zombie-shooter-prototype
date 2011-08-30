@@ -15,6 +15,9 @@ package
 		[Embed(source = '../assets/gfx/player.png')] 
 		public static const PLAYER:Class;
 		
+		[Embed(source = '../assets/gfx/actors/monster1.png')] 
+		public static const MONSTER1:Class;
+		
 		[Embed(source = '../assets/gfx/light.png')] 
 		public static const LIGHT:Class;
 		
