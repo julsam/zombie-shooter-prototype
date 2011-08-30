@@ -33,6 +33,7 @@ package
 			Input.define("Up", Key.UP, Key.Z);
 			Input.define("Down", Key.DOWN, Key.S);
 			Input.define("Run", Key.SHIFT);
+			Input.define("Shoot", Key.SPACE);
 			
 			//create the lighting
 			add(lighting = new Lighting());
@@ -40,6 +41,7 @@ package
 			loadLevel();
 			
 			add(new Zombie(400, 150));
+			add(new Zombie(400, 175));
 			
 			//add the lights to the screen
 			lighting.addLight(new Light(20, 20, 1, 1));

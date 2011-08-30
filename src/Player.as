@@ -53,7 +53,7 @@ package
 		override public function update():void
 		{
 			// Shoot
-			if(Input.mousePressed)
+			if(Input.mousePressed || Input.check("Shoot"))
 			{
 				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
 			}

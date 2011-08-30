@@ -24,6 +24,7 @@ package
 		
 		public function Monster(x:int, y:int)
 		{
+			super(x, y);
 			this.x = x;
 			this.y = y;
 			
@@ -37,12 +38,24 @@ package
 			image.centerOO();
 		}
 		override public function update():void
-		{			
+		{
+			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
+			if (b)
+			{
+				image.color = 0xff0000;
+				b.destroy();
+				destroy();
+			}
+			else
+			{
+				image.color = 0xffff00;
+			}
 			super.update();
 		}
 		
 		protected function destroy():void
 		{
+			trace("destroy", this);
 			FP.world.remove(this);
 		}
 		

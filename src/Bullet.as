@@ -10,7 +10,7 @@ package
 	
 	public class Bullet extends Entity
 	{
-		private const SPEED:Number = 650; 
+		private const SPEED:Number = 650;
 		private var direction:Point = new Point();
 		private var velocity:Point = new Point;
 		private var angle:Number;
@@ -53,6 +53,7 @@ package
 				
 		public function destroy():void
 		{
+			trace("destroy", this);
 			FP.world.remove(this);
 		}
 	}
