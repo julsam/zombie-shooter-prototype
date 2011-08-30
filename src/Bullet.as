@@ -10,7 +10,7 @@ package
 	
 	public class Bullet extends Entity
 	{		
-		private const SPEED:Number = 650;
+		private const SPEED:Number = 400;
 		private var direction:Point = new Point();
 		private var velocity:Point = new Point;
 		private var angle:Number;
@@ -18,7 +18,7 @@ package
 		public function Bullet(x:Number, y:Number, _direction:Point)
 		{
 			graphic	= new Image(new BitmapData(2, 2, false, 0xff0000));
-			setHitbox(2, 2);
+			setHitbox(3, 3);
 			centerOrigin();
 			super(x, y, graphic);
 
@@ -26,7 +26,7 @@ package
 
 			angle = FP.angle(x, y, direction.x, direction.y);
 			
-			FP.angleXY(velocity, angle, G.FIXED_FRAME_TIME * SPEED);
+			FP.angleXY(velocity, angle, SPEED * FP.elapsed);
 			
 			type = "Bullet";
 		}

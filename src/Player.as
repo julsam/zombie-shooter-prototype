@@ -108,8 +108,8 @@ package
 			if (Input.check("Right")) movement.x++;
 			
 			
-			vector.x = speed * G.FIXED_FRAME_TIME * movement.x;
-			vector.y = speed * G.FIXED_FRAME_TIME * movement.y;
+			vector.x = speed * FP.elapsed * movement.x;
+			vector.y = speed * FP.elapsed * movement.y;
 		}
 		
 		private function updateCollision():void
