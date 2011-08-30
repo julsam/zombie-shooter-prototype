@@ -10,14 +10,23 @@ package
 	import net.flashpunk.graphics.Backdrop;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Tilemap;
+	import net.flashpunk.masks.Grid;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	import net.flxpunk.FlxEntity;
+	import net.flxpunk.FlxPath;
+	import net.flxpunk.FlxPathFinding;
 	
 	public class Game extends World
 	{
+		public var unit:Unit;
+		public var grid:Grid;
+		public var pf:FlxPathFinding;
+		
 		public var tileset:Tilemap;
 		public var tilesRoof:Tilemap;
 		public var roof:Entity;
+		private var level:Entity;
 		
 		public var lighting:Lighting;
 		public var lightPlayer:Light
@@ -38,10 +47,27 @@ package
 			//create the lighting
 			add(lighting = new Lighting());
 			
-			loadLevel();
+			loadLevel();			
 			
 			add(new Zombie(400, 150));
 			add(new Monster(400, 175));
+			
+			unit = new Unit(400, 200);
+			add(unit);			
+			
+			// start a unit movement from one point to another
+			var path:FlxPath;
+			
+			//create a pathfinding object. Pass him our collison grid
+			pf = new FlxPathFinding(grid); 
+			// find path
+			path = pf.findPath(unit.flx.getMidpoint(), new Point(150, 200), false);
+			// let's moving an unit now!
+			// with speed: 30 pixels per second 
+			// and move from the start of the path to the end then turn around and go back to the start, over and over.
+			unit.flx.followPath(path, 30, FlxPath.PATH_YOYO);
+			
+			FP.watch("flx");			
 			
 			//add the lights to the screen
 			lighting.addLight(new Light(20, 20, 1, 1));
@@ -61,6 +87,12 @@ package
 			
 			lightPlayer.x = G.player.x;
 			lightPlayer.y = G.player.y;
+			
+			if (Input.mousePressed) {				
+				var path:FlxPath;
+				path = pf.findPath(unit.flx.getMidpoint(), new Point(mouseX, mouseY), true);
+				unit.flx.followPath(path, 60, FlxPath.PATH_FORWARD);
+			}
 		}
 		
 		public function loadLevel():void 
@@ -98,10 +130,14 @@ package
 				// 17 = number of column
 				tileset.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 			}
+						
+			
+			grid = new Grid(FP.width, FP.height, G.grid, G.grid);
 			
 			// Solids
 			for each (o in xml.solids[0].rect) {
 				add(new Solid(o.@x, o.@y, o.@w, o.@h));
+				grid.setRect(o.@x / G.grid, o.@y / G.grid, o.@w / G.grid, o.@h / G.grid, true);
 			}
 			
 			// lights
