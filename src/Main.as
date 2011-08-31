@@ -22,7 +22,7 @@ package
 		
 		override public function init():void
 		{
-			FP.world = new Game;
+			FP.world = new GameWorld2;
 		}		
 	}
 	

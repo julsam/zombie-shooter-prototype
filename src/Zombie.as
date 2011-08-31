@@ -47,7 +47,9 @@ package
 				
 				// TODO queue list that contain entity to remove if too many
 				if( timer > 10 ) // total duration before remove()
+				{
 					FP.world.remove(this);
+				}
 				
 				return;
 			}
