@@ -6,7 +6,7 @@ package
 	import net.flashpunk.FP;
 	
 	public class Camera extends Entity
-	{		
+	{
 		public var lookAt:Entity;
 		public var movedX:Number;
 		
