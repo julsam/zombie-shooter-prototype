@@ -16,7 +16,7 @@ package
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
-	
+		
 	public class Game extends World
 	{
 		public var unit:Unit;
@@ -127,7 +127,7 @@ package
 			
 			// Tiles Above
 			for each (o in xml.cave[0].tile) {
-				// 17 = number of column
+				// 8 = number of column
 				tileset.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 			}
 						

@@ -32,7 +32,7 @@ package
 			sprite.add("death", [20]);
 			sprite.play("stand");
 			
-			graphic = sprite;			
+			graphic = sprite;
 			sprite.centerOO();
 			
 			health = 10;

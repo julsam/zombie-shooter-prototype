@@ -15,6 +15,8 @@ package
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
 	
+	import Playtomic.*;
+	
 	/**
 	 * ...
 	 * @author Igor
@@ -40,6 +42,8 @@ package
 		override public function begin():void 
 		{
 			super.begin();
+			
+			Log.CustomMetric("MainMenu", "Screens");
 			
 			// create a tilemap
 			map = new Tilemap(TILES, 720, 480, 24, 24);
