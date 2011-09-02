@@ -39,7 +39,7 @@ package
 		
 		public function Preloader ()
 		{
-			Log.View(Config.GAME_ID, Config.GUID, Config.API_Key, root.loaderInfo.loaderURL);
+			Log.View(Config.PLAYTOMIC_GAME_ID, Config.PLAYTOMIC_GUID, Config.PLAYTOMIC_API_Key, root.loaderInfo.loaderURL);
 			
 			sw = stage.stageWidth;
 			sh = stage.stageHeight;
@@ -119,6 +119,7 @@ package
 		private function onMouseDown(e:MouseEvent):void {
 			if (hasLoaded())
 			{
+				//Log.CustomMetric("swfLoaded");
 				stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 				startup();
 			}

@@ -28,22 +28,8 @@ package
 			FP.console.enable();
 			
 			Log.Play();
-			GeoIP.Lookup(SetPlayerCountry);
 			
-			FP.world = new GameWorld2;
-		}
-		
-		public function SetPlayerCountry(country:Object, response:Object):void
-		{
-			if(response.Success)
-			{
-				// we have the country data
-				FP.console.log("Player is from " + country.Code + " / " + country.Name);
-			}
-			else
-			{
-				FP.console.log("request failed", response.ErrorCode);
-			}
+			FP.world = new Game;
 		}
 	}
 }

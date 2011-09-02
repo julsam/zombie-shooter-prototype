@@ -16,6 +16,8 @@ package
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
+	
+	import Playtomic.Log;
 		
 	public class Game extends World
 	{
@@ -36,7 +38,7 @@ package
 			// level size
 			FP.width = G.windowWidth;
 			FP.height = G.windowHeight;
-						
+			
 			Input.define("Left", Key.LEFT, Key.Q);
 			Input.define("Right", Key.RIGHT, Key.D);
 			Input.define("Up", Key.UP, Key.Z);
@@ -67,7 +69,6 @@ package
 			// and move from the start of the path to the end then turn around and go back to the start, over and over.
 			unit.flx.followPath(path, 30, FlxPath.PATH_YOYO);
 			
-			FP.watch("flx");			
 			
 			//add the lights to the screen
 			lighting.addLight(new Light(20, 20, 1, 1));
@@ -87,8 +88,11 @@ package
 			
 			lightPlayer.x = G.player.x;
 			lightPlayer.y = G.player.y;
+			//Log.Heatmap("mousePos", "Heatmap", Input.mouseX, Input.mouseX);
 			
-			if (Input.mousePressed) {				
+			if (Input.mousePressed) {
+				//Log.CustomMetric("mousePressedTest");
+				//Log.LevelCounterMetric("clickCount", "level1");
 				var path:FlxPath;
 				path = pf.findPath(unit.flx.getMidpoint(), new Point(mouseX, mouseY), true);
 				unit.flx.followPath(path, 60, FlxPath.PATH_FORWARD);

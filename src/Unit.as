@@ -3,6 +3,7 @@ package
 	import net.flashpunk.Entity;
 	import net.flxpunk.FlxTween;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.FP;
 	
 	/**
 	 * ...
