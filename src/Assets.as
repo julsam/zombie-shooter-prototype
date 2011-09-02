@@ -4,6 +4,8 @@ package
 	
 	public class Assets
 	{
+		/*** GFX ***/
+		
 		[Embed(source = '../assets/levels/zlt1.oel',  mimeType = "application/octet-stream")] 
 		public static const TEST1:Class;
 		
@@ -23,5 +25,12 @@ package
 		
 		[Embed(source = '../assets/gfx/shadowSpot.png')] 
 		public static const SHADOW:Class;
+		
+		/*** SFX ***/
+		
+		[Embed(source="../assets/sfx/AlienShooter/pistol_shot.mp3")]
+		public static const SFX_PISTOL_SHOT:Class;
+		[Embed(source="../assets/sfx/AlienShooter/miss_hit_v2.mp3")]
+		public static const SFX_MISS_HIT:Class;
 	}
 }

@@ -54,12 +54,14 @@ package
 			// Shoot
 			if(Input.mousePressed || Input.check("Shoot"))
 			{
+				SoundMgr.playSound(SoundMgr.sfx_pistol_shot);
 				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
 			}
 			
 			// Run
 			if(Input.check("Run"))
 			{
+				SoundMgr.playSound(SoundMgr.sfx_miss_hit);
 				speed = RSPEED; // run speed
 			}
 			else
