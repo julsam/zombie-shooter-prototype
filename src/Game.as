@@ -1,11 +1,14 @@
 package
 {	
+	import Playtomic.Log;
+	
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.World;
 	import net.flashpunk.graphics.Backdrop;
 	import net.flashpunk.graphics.Image;
@@ -16,8 +19,6 @@ package
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
-	
-	import Playtomic.Log;
 		
 	public class Game extends World
 	{
@@ -35,6 +36,8 @@ package
 				
 		override public function begin():void
 		{
+			SoundMgr.setCurrentMusic(new Sfx(Assets.XGAMEOVER));
+			
 			// level size
 			FP.width = G.windowWidth;
 			FP.height = G.windowHeight;

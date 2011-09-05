@@ -32,5 +32,8 @@ package
 		public static const SFX_PISTOL_SHOT:Class;
 		[Embed(source="../assets/sfx/AlienShooter/miss_hit_v2.mp3")]
 		public static const SFX_MISS_HIT:Class;
+				
+		[Embed(source="../assets/sfx/Metaruka/xGameOver22.mp3")]
+		public static const XGAMEOVER:Class;
 	}
 }

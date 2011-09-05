@@ -22,6 +22,6 @@ package
 		public static const FIXED_FRAME_TIME:Number = 1.0 / 60.0;
 		
 		public static var volumeMusic:Number = 1;
-		public static var volumeSound:Number = 1;
+		public static var volumeSound:Number = 0.5;
 	}
 }
