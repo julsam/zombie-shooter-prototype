@@ -24,6 +24,8 @@ package
 		{
 			super(x, y);
 			
+			setHitbox(12, 23, 7, 5)
+			
 			spritemap = new Spritemap(SPRITES, 32, 32);
 			spritemap.add ("idle", [0, 2,2,2], 1);
 			spritemap.add("walk", [3,4,5,6], 10);
@@ -59,6 +61,13 @@ package
 			
 			if (flx.velocity.x < 0) spritemap.flipped = true;
 			else spritemap.flipped = false;
+			
+			updateDepth();
+		}		
+		
+		protected function updateDepth():void
+		{
+			layer = -y - height;
 		}
 		
 	}

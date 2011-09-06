@@ -45,7 +45,7 @@ package
 			setHitbox(6, 8, 3, 2);
 			graphic	= sprite;
 			
-			type = "Player";			
+			type = "Player";
 			
 			sprite.centerOO();
 		}
@@ -97,9 +97,15 @@ package
 			else
 				dirAnim = "stand"+dirAnim;
 			sprite.play(dirAnim);
+			
+			updateDepth();
+		}		
+		
+		protected function updateDepth():void
+		{
+			layer = -y - height;
 		}
-		
-		
+				
 		private function updateMovement():void
 		{
 			var movement:Point = new Point;

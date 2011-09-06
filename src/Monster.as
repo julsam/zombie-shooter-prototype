@@ -49,6 +49,13 @@ package
 				image.color = 0xffff00;
 			}
 			super.update();
+			
+			updateDepth();
+		}
+		
+		protected function updateDepth():void
+		{
+			layer = -y - height;
 		}
 		
 		protected function destroy():void
