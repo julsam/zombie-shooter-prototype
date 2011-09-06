@@ -20,8 +20,8 @@ package
 		override public function init():void
 		{
 			FP.screen = new ScreenRetro;
+			
 			FP.screen.scale = 2;
-			//FP.screen = new ScreenRetro;
 			//FP.screen.scale = 3;
 			
 			FP.screen.color = 0x000000;

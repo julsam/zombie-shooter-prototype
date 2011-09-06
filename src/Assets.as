@@ -4,7 +4,7 @@ package
 	
 	public class Assets
 	{
-		/*** GFX ***/
+		/*** GFX ***/		
 		
 		[Embed(source = '../assets/levels/zlt1.oel',  mimeType = "application/octet-stream")] 
 		public static const TEST1:Class;
@@ -33,7 +33,7 @@ package
 		[Embed(source="../assets/sfx/AlienShooter/miss_hit_v2.mp3")]
 		public static const SFX_MISS_HIT:Class;
 				
-		[Embed(source="../assets/sfx/Metaruka/xGameOver22.mp3")]
+		[Embed(source="../assets/sfx/tests/til.mp3")]
 		public static const XGAMEOVER:Class;
 	}
 }

@@ -8,7 +8,7 @@ package
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
-	import net.flashpunk.Sfx;
+	import net.flashpunk.Sfx2;
 	import net.flashpunk.World;
 	import net.flashpunk.graphics.Backdrop;
 	import net.flashpunk.graphics.Image;
@@ -36,7 +36,7 @@ package
 				
 		override public function begin():void
 		{
-			SoundMgr.setCurrentMusic(new Sfx(Assets.XGAMEOVER));
+			SoundMgr.setCurrentMusic(new Sfx2(Assets.XGAMEOVER, 52, 90), true);
 			
 			// level size
 			FP.width = G.windowWidth;
@@ -80,7 +80,7 @@ package
 			//also, just for the fun of it, lets through in a bunch of random alpha and scale
 			for (var i:int = 0; i < 20; i ++)
 			{
-				//lighting.add(new Light(Math.random() * FP.width, Math.random() * FP.height, Math.random(), Math.random()));
+				//lighting.addLight(new Light(Math.random() * FP.width, Math.random() * FP.height, Math.random(), Math.random()));
 			}
 			
 		}
@@ -120,7 +120,7 @@ package
 			roof = new Entity()
 			tilesRoof = new Tilemap(Assets.TILESET, FP.width, FP.height, G.grid, G.grid);
 			roof.graphic = tilesRoof;
-			roof.layer = -8;
+			roof.layer = -FP.height;
 			FP.world.add(roof);
 			
 			// Tiles
