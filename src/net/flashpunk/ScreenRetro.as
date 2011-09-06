@@ -12,35 +12,41 @@ package net.flashpunk
 	public class ScreenRetro extends Screen
 	{
 		// PATTERNS	
-		public static const NONE:Array 		= 	[];
+		public static const NONE:Array = [];
 		
-		public static const HORIZONTAL:Array = 	[[1], [0]];
+		public static const HORIZONTAL:Array = [[1], [0]];
 		
-		public static const VERTICAL:Array = 	[[1, 0]];
+		public static const VERTICAL:Array = [[1, 0]];
 		
-		public static const DIAGONAL:Array = 	[[0, 0, 1],
-												 [0, 1, 0],									
-												 [1, 0, 0]];
-											
-		public static const INV_DIAGONAL:Array =[[1, 0, 0],
-												 [0, 1, 0],									
-												 [0, 0, 1]];
+		public static const DIAGONAL:Array = [
+			[0, 0, 1],
+			[0, 1, 0],									
+			[1, 0, 0]];
 		
-		public static const GRID:Array 	= 		[[1, 0],
-												 [0, 1]];
+		public static const INV_DIAGONAL:Array = [
+			[1, 0, 0],
+			[0, 1, 0],									
+			[0, 0, 1]];
 		
-		public static const GRID2:Array = 		[[2, 1, 0],
-												 [1, 0, 2],
-												 [0, 2, 1]];
+		public static const GRID:Array 	= [
+			[1, 0],
+			[0, 1]];
 		
-		public static const DOUBLE_GRID:Array = [[1, 0, 0, 1],
-												 [0, 1, 1, 0],			 
-											 	 [0, 1, 1, 0],
-											 	 [1, 0, 0, 1]];
-											
-		public static const RGB_FLAG:Array 	= 	[[0, 1, 2],
-												 [0, 1, 2],
-												 [0, 1, 2]];
+		public static const GRID2:Array = [
+			[2, 1, 0],
+			[1, 0, 2],
+			[0, 2, 1]];
+		
+		public static const DOUBLE_GRID:Array = [
+			[1, 0, 0, 1],
+			[0, 1, 1, 0],			 
+			[0, 1, 1, 0],
+			[1, 0, 0, 1]];
+		
+		public static const RGB_FLAG:Array 	= [
+			[0, 1, 2],
+			[0, 1, 2],
+			[0, 1, 2]];
 		
 		// create your own pattern here
 		
@@ -79,8 +85,8 @@ package net.flashpunk
 		
 		override public function update():void
 		{
-		super.update();
-		_scanlines.transform.matrix = matrix;
+			super.update();
+			_scanlines.transform.matrix = matrix;
 		}
 		
 		
@@ -136,8 +142,6 @@ package net.flashpunk
 				}
 			}
 			return bmd;
-		}
-		
-	}
-	
+		}	
+	}	
 }
