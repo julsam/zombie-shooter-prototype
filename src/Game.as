@@ -19,6 +19,8 @@ package
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
+	
+	import entities.*;
 		
 	public class Game extends World
 	{
@@ -55,7 +57,7 @@ package
 			loadLevel();			
 			
 			add(new Zombie(400, 150));
-			add(new Monster(400, 175));
+			add(new Zombie(400, 175));
 			
 			unit = new Unit(400, 200);
 			add(unit);			

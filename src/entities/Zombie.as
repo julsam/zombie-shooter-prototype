@@ -1,4 +1,4 @@
-package
+package entities
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -13,8 +13,8 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class Zombie extends Monster 
-	{
+	public class Zombie extends BaseMonster 
+	{		
 		private var timer:Number = 0;
 		
 		public function Zombie(x:Number, y:Number)
@@ -36,6 +36,7 @@ package
 			sprite.centerOO();
 			
 			health = 10;
+			childType = "Zombie"
 		}
 		
 		override public function update():void
@@ -48,7 +49,7 @@ package
 				// TODO queue list that contain entity to remove if too many
 				if( timer > 10 ) // total duration before remove()
 				{
-					FP.world.remove(this);
+					this.destroy();
 				}
 				
 				return;
@@ -64,10 +65,23 @@ package
 			
 			if (sprite.currentAnim == "explode" && sprite.complete)
 			{	
-				//FP.world.remove(this);
+				//this.destroy();
 				sprite.play("death");
 			}
+			
+			checkForBullet();
+			
 			super.update();
+		}
+		
+		override protected function checkForBullet():void
+		{
+			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
+			if (b)
+			{
+				this.takeDamage();
+				b.destroy();
+			}
 		}
 	}
 }

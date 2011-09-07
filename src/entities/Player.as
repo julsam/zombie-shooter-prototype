@@ -1,9 +1,7 @@
-package
+package entities
 {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
-	
-	import flashx.textLayout.debug.assert;
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
@@ -12,11 +10,10 @@ package
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class Player extends Entity 
+	public class Player extends BaseActor 
 	{
 		private var vector:Point;
 		private var velocity:Point = new Point();
-		private var speed:Number;
 		
 		private const NSPEED:Number = 100;
 		private const RSPEED:Number = 200;
@@ -49,6 +46,7 @@ package
 			
 			sprite.centerOO();
 		}
+		
 		override public function update():void
 		{
 			// Shoot
@@ -71,7 +69,7 @@ package
 			
 			updateMovement();
 			updateCollision();			
-						
+			
 			var axe:Number = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
 			
 			var dirAnim:String;
@@ -98,14 +96,9 @@ package
 				dirAnim = "stand"+dirAnim;
 			sprite.play(dirAnim);
 			
-			updateDepth();
-		}		
-		
-		protected function updateDepth():void
-		{
-			layer = -y - height;
+			super.update();
 		}
-				
+		
 		private function updateMovement():void
 		{
 			var movement:Point = new Point;

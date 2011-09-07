@@ -2,6 +2,8 @@ package
 {
 	import flash.utils.Dictionary;
 	
+	import entities.Player;
+	
 	public class G
 	{		
 		public static var
