@@ -4,6 +4,8 @@ package entities
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
+	import net.flxpunk.FlxTween;
+	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -13,6 +15,8 @@ package entities
 	
 	public class BaseMonster extends BaseActor 
 	{
+		public var flx:FlxTween;
+		
 		protected var image:Image;
 		protected var sprite:Spritemap;
 		

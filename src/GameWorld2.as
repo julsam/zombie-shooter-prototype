@@ -62,7 +62,6 @@ package
 			unit=new Unit(100, 200);
 			add(unit);
 			
-			
 			// start a unit movement from one point to another
 			var path:FlxPath;
 			

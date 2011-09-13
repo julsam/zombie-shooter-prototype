@@ -4,7 +4,7 @@ package entities
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
-	import flashx.textLayout.debug.assert;
+	import net.flxpunk.FlxTween;
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
@@ -13,8 +13,8 @@ package entities
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class Zombie extends BaseMonster 
-	{		
+	public class Zombie extends BaseMonster
+	{
 		private var timer:Number = 0;
 		
 		public function Zombie(x:Number, y:Number)
@@ -35,12 +35,18 @@ package entities
 			graphic = sprite;
 			sprite.centerOO();
 			
+			speed = 60;
 			health = 10;
 			childType = "Zombie"
+				
+			flx = new FlxTween(this);
+			addTween(flx, true);
+			flx.drag.x = 400;
+			flx.drag.y = 400;
 		}
 		
 		override public function update():void
-		{
+		{			
 			// if it's dead, on the floor, stand there for a few seconds with death animation
 			if (dead && sprite.currentAnim == "death")
 			{
@@ -59,7 +65,10 @@ package entities
 				sprite.play("explode");
 			}
 			else
-			{
+			{				
+				x += flx.deltaX;
+				y += flx.deltaY;
+				
 				sprite.play("stand");
 			}
 			

@@ -29,7 +29,7 @@ package
 			
 			Log.Play();
 			
-			FP.world = new Game;
+			FP.world = new Game2;
 		}
 	}
 }

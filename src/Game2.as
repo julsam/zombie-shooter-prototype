@@ -16,30 +16,29 @@ package
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
 	
 	import entities.*;
-		
-	public class Game extends World
+	
+	public class Game2 extends World
 	{
-		public var unit:Unit;
 		public var grid:Grid;
 		public var pf:FlxPathFinding;
+		public var unit:Zombie;
+		public var unit2:Zombie;
+		
+		private var timer:Number = 0;
 		
 		public var tileset:Tilemap;
 		public var tilesRoof:Tilemap;
+		public var level:Level;
 		public var roof:Entity;
-		private var level:Entity;
 		
-		public var lighting:Lighting;
-		public var lightPlayer:Light
-				
 		override public function begin():void
-		{
-			//SoundMgr.setCurrentMusic(new Sfx2(Assets.XGAMEOVER, 52, 90), true);
-			
+		{			
 			// level size
 			FP.width = G.windowWidth;
 			FP.height = G.windowHeight;
@@ -51,56 +50,40 @@ package
 			Input.define("Run", Key.SHIFT);
 			Input.define("Shoot", Key.SPACE);
 			
-			//create the lighting
-			add(lighting = new Lighting());
+			loadLevel();
 			
-			loadLevel();			
-			
-			add(new Zombie(400, 150));
-			add(new Zombie(400, 175));
-			
-			unit = new Unit(400, 200);
-			add(unit);			
-			
-			// start a unit movement from one point to another
-			var path:FlxPath;
-			
+			// create an unit
+			unit = new Zombie(400, 200);
+			add(unit);	
+			unit2 = new Zombie(200, 200);
+			add(unit2);	
+						
 			//create a pathfinding object. Pass him our collison grid
-			pf = new FlxPathFinding(grid); 
-			// find path
+			pf = new FlxPathFinding(grid);
+			
+			var path:FlxPath;
 			path = pf.findPath(unit.flx.getMidpoint(), new Point(150, 200), false);
 			// let's moving an unit now!
 			// with speed: 30 pixels per second 
 			// and move from the start of the path to the end then turn around and go back to the start, over and over.
 			unit.flx.followPath(path, 30, FlxPath.PATH_YOYO);
-			
-			
-			//add the lights to the screen
-			lighting.addLight(new Light(20, 20, 1, 1));
-			lighting.addLight(lightPlayer = new Light(G.player.x, G.player.y, 1, 1));
-			
-			//also, just for the fun of it, lets through in a bunch of random alpha and scale
-			for (var i:int = 0; i < 20; i ++)
-			{
-				//lighting.addLight(new Light(Math.random() * FP.width, Math.random() * FP.height, Math.random(), Math.random()));
-			}
-			
 		}
 		
 		override public function update():void
 		{
 			super.update();
 			
-			lightPlayer.x = G.player.x;
-			lightPlayer.y = G.player.y;
-			//Log.Heatmap("mousePos", "Heatmap", Input.mouseX, Input.mouseX);
-			
-			if (Input.mousePressed) {
+			timer += FP.elapsed;
+			if( timer > 0.5 ) // total duration before remove()
+			{
 				//Log.CustomMetric("mousePressedTest");
 				//Log.LevelCounterMetric("clickCount", "level1");
 				var path:FlxPath;
-				path = pf.findPath(unit.flx.getMidpoint(), new Point(mouseX, mouseY), true);
-				unit.flx.followPath(path, 30, FlxPath.PATH_FORWARD);
+				path = pf.findPath(unit.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
+				unit.flx.followPath(path, 60);
+				path = pf.findPath(unit2.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
+				unit2.flx.followPath(path, 30);
+				timer = 0;
 			}
 		}
 		
@@ -130,7 +113,7 @@ package
 			
 			// Player
 			add(G.player = new Player(xml.objects[0].playerStart.@x, xml.objects[0].playerStart.@y));
-						
+			
 			// Camera
 			add(G.camera = new Camera(G.player as Entity));
 			
@@ -139,7 +122,6 @@ package
 				// 8 = number of column
 				tileset.setTile(o.@x / G.grid, o.@y / G.grid, (8 * (o.@ty/G.grid)) + (o.@tx/G.grid));
 			}
-						
 			
 			grid = new Grid(FP.width, FP.height, G.grid, G.grid);
 			
@@ -150,6 +132,7 @@ package
 			}
 			
 			// lights
+			/*
 			if (G.lightingEnabled)
 			{
 				for each (o in xml.objects[0].fire) {
@@ -159,6 +142,7 @@ package
 					lighting.addShadow(new Shadow(o.@x, o.@y, 1.3, 0.95));
 				}
 			}
+			*/
 			
 			// Tiles Above Deco
 			if (xml.roof[0])

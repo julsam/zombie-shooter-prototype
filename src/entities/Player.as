@@ -9,9 +9,14 @@ package entities
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	import net.flxpunk.FlxTween;
 	
-	public class Player extends BaseActor 
+	public class Player extends BaseActor
 	{
+		// flixel movement and path movement controller		
+		public var flx:FlxTween;
+		public var justMoved:Boolean = false; // check if entity has moved in since last frame
+		
 		private var vector:Point;
 		private var velocity:Point = new Point();
 		
@@ -45,10 +50,14 @@ package entities
 			type = "Player";
 			
 			sprite.centerOO();
+			
+			flx = new FlxTween(this);
+			addTween(flx, true);
 		}
 		
 		override public function update():void
 		{
+			justMoved = false;
 			// Shoot
 			if(Input.mousePressed || Input.check("Shoot"))
 			{
@@ -91,7 +100,10 @@ package entities
 			}
 			
 			if (Input.check("Up") || Input.check("Down") || Input.check("Left") || Input.check("Right"))
+			{				
+				justMoved = true;
 				dirAnim = "walk"+dirAnim;
+			}
 			else
 				dirAnim = "stand"+dirAnim;
 			sprite.play(dirAnim);
