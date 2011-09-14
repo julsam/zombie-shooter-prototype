@@ -29,7 +29,7 @@ package
 		public function Lighting() 
 		{
 			//make us above everything
-			layer = -100;
+			layer = -FP.height;
 			
 			//create the canvas
 			canvas = new BitmapData(FP.width, FP.height, false, 0xFFFFFF);

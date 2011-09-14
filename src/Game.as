@@ -119,7 +119,7 @@ package
 			FP.height = xml.height;
 			
 			// roofs
-			roof = new Entity()
+			roof = new Entity();
 			tilesRoof = new Tilemap(Assets.TILESET, FP.width, FP.height, G.grid, G.grid);
 			roof.graphic = tilesRoof;
 			roof.layer = -FP.height;
