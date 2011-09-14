@@ -35,7 +35,7 @@ package entities
 			graphic = sprite;
 			//sprite.centerOO();
 			
-			speed = 60;
+			speed = FP.rand(10) + 55 ;
 			health = 10;
 			childType = "Zombie";
 		}

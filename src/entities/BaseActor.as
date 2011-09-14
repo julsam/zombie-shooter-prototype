@@ -11,10 +11,14 @@ package entities
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class BaseActor extends Entity 
+	import net.flxpunk.FlxPath;
+	
+	public class BaseActor extends Entity
 	{
+		public var pathActor:FlxPath;
+		
 		protected var speed:Number;
-		protected var health:int;		
+		protected var health:int;
 		protected var dead:Boolean = false;
 		
 		protected var invincible:Boolean = false;

@@ -5,6 +5,7 @@ package entities
 	import flash.geom.Point;
 	
 	import net.flxpunk.FlxTween;
+	import net.flxpunk.FlxPath;
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
@@ -13,9 +14,10 @@ package entities
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
-	public class BaseMonster extends BaseActor 
+	public class BaseMonster extends BaseActor
 	{
 		public var flx:FlxTween;
+		protected var timerFindPath:Number = 0;
 		
 		protected var image:Image;
 		protected var sprite:Spritemap;
@@ -35,7 +37,18 @@ package entities
 		}
 		
 		override public function update():void
-		{			
+		{
+			timerFindPath += FP.elapsed;
+			if( timerFindPath > 0.5 ) // total duration before remove()
+			{
+				//Log.CustomMetric("mousePressedTest");
+				//Log.LevelCounterMetric("clickCount", "level1");
+				var path:FlxPath;
+				path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
+				this.flx.followPath(path, speed);
+				timerFindPath = 0;
+			}
+			
 			super.update();
 		}
 		
