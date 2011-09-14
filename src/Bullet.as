@@ -15,6 +15,8 @@ package
 		private var velocity:Point = new Point;
 		private var angle:Number;
 		
+		public var hasCollided:Boolean = false; // if has collide, it don't make any more damage to monsters
+		
 		public function Bullet(x:Number, y:Number, _direction:Point)
 		{
 			graphic	= new Image(new BitmapData(2, 2, false, 0xff0000));
@@ -36,7 +38,7 @@ package
 			x += velocity.x;
 			y += velocity.y;
 			
-			// if Bullet goes out of the game
+			// if Bullet goes out of the game // TODO: if out of the screen
 			if (x > G.windowWidth + 100	|| y > G.windowHeight + 100 
 				|| x < -100 || y < -100)
 			{
@@ -54,6 +56,7 @@ package
 		public function destroy():void
 		{
 			trace("destroy", this);
+			this.hasCollided = true;
 			FP.world.remove(this);
 		}
 	}

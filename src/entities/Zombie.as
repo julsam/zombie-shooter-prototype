@@ -33,16 +33,11 @@ package entities
 			sprite.play("stand");
 			
 			graphic = sprite;
-			sprite.centerOO();
+			//sprite.centerOO();
 			
 			speed = 60;
 			health = 10;
-			childType = "Zombie"
-				
-			flx = new FlxTween(this);
-			addTween(flx, true);
-			flx.drag.x = 400;
-			flx.drag.y = 400;
+			childType = "Zombie";
 		}
 		
 		override public function update():void
@@ -86,9 +81,10 @@ package entities
 		override protected function checkForBullet():void
 		{
 			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
-			if (b)
+			if (b && !b.hasCollided)
 			{
 				this.takeDamage();
+				b.hasCollided = true;
 				b.destroy();
 			}
 		}

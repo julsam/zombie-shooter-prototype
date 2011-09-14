@@ -26,8 +26,14 @@ package entities
 		{
 			super(x, y);
 			
-			type = "Monster";			
+			flx = new FlxTween(this);
+			addTween(flx, true);
+			flx.drag.x = 400;
+			flx.drag.y = 400;
+			
+			type = "Monster";
 		}
+		
 		override public function update():void
 		{			
 			super.update();
