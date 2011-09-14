@@ -12,7 +12,6 @@ package
 	import net.flashpunk.FP;
 	import net.flashpunk.Sfx2;
 	import net.flashpunk.World;
-	import net.flashpunk.graphics.Backdrop;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;

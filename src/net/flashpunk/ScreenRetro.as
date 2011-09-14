@@ -53,7 +53,7 @@ package net.flashpunk
 		
 		
 		// COLORS
-		private const BLACK:Array		= [0x40000000, 0x00FFFFFF];
+		private const BLACK:Array		= [0x10000000, 0x00FFFFFF];
 		private const RGB:Array			= [0x40CC0000, 0x4000CC00, 0x400000CC];		
 		// create your own colors list here [c1,c2]		
 		

@@ -4,15 +4,16 @@ package
 	
 	public class Assets
 	{
-		/*** GFX ***/		
-		
-		[Embed(source = '../assets/levels/zlt1.oel',  mimeType = "application/octet-stream")] 
+		[Embed(source = '../assets/levels/zlt2.oel',  mimeType = "application/octet-stream")] 
 		public static const TEST1:Class;
 		
+		/*** GFX ***/
 		
-		//tilesets
 		[Embed(source = '../assets/gfx/tileset.png')] 
 		public static const TILESET:Class;
+		
+		[Embed(source = '../assets/gfx/floor.png')] 
+		public static const FLOOR_BG:Class;
 		
 		[Embed(source = '../assets/gfx/player.png')] 
 		public static const PLAYER:Class;

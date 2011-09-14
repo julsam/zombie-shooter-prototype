@@ -6,6 +6,7 @@ package
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Backdrop;
 	import net.flashpunk.graphics.Tilemap;
 	import net.flashpunk.masks.Grid;
 	
@@ -31,6 +32,8 @@ package
 			
 			FP.width = xml.width;
 			FP.height = xml.height;
+			
+			FP.world.addGraphic(new Backdrop(Assets.FLOOR_BG, true, true));
 			
 			belowTiles = createTilemap(belowTiles, FP.height);
 			levelTiles = createTilemap(levelTiles, 0);
