@@ -1,5 +1,7 @@
 package entities
 {
+	import utils.*;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
@@ -73,12 +75,12 @@ package entities
 				sprite.play("death");
 			}
 			
-			checkForBullet();
+			checkForDamage();
 			
 			super.update();
 		}
 		
-		override protected function checkForBullet():void
+		override protected function checkForDamage():void
 		{
 			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
 			if (b && !b.hasCollided)

@@ -1,5 +1,6 @@
 package entities
 {
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
@@ -11,11 +12,12 @@ package entities
 	import net.flashpunk.utils.Key;
 	import net.flxpunk.FlxTween;
 	
+	import utils.Blink;
+	
 	public class Player extends BaseActor
 	{
-		// flixel movement and path movement controller		
-		public var flx:FlxTween;
-		public var justMoved:Boolean = false; // check if entity has moved in since last frame
+		public var flx:FlxTween;               // flixel movement and path movement controller
+		public var justMoved:Boolean = false;  // check if entity has moved in since last frame
 		
 		private var vector:Point;
 		private var velocity:Point = new Point();
@@ -43,6 +45,8 @@ package entities
 			sprite.add("walkRight", [8, 2, 9, 2], 7, true);
 			sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
 			sprite.play("standDown");
+			
+			blink = new Blink(sprite);
 			
 			setHitbox(6, 8, 3, 2);
 			graphic	= sprite;
@@ -105,13 +109,32 @@ package entities
 				dirAnim = "walk"+dirAnim;
 			}
 			else
+			{
 				dirAnim = "stand"+dirAnim;
+			}
 			sprite.play(dirAnim);
+			
+			checkForDamage();
 			
 			super.update();
 		}
 		
-		private function updateMovement():void
+		override protected function checkForDamage():void
+		{
+			blink.update();
+			
+			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
+			if (e)
+			{
+				if (!this.blink.enabled && this.collideWith(e, this.x, this.y))
+				{
+					blink.enable();
+					trace('COLLIDE!');
+				}
+			}
+		}
+		
+		protected function updateMovement():void
 		{
 			var movement:Point = new Point;
 			
@@ -125,7 +148,7 @@ package entities
 			vector.y = speed * FP.elapsed * movement.y;
 		}
 		
-		private function updateCollision():void
+		protected function updateCollision():void
 		{
 			x += vector.x;
 			

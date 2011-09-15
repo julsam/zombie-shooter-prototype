@@ -1,5 +1,7 @@
 package entities
 {
+	import utils.*;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
@@ -19,9 +21,10 @@ package entities
 		
 		protected var speed:Number;
 		protected var health:int;
-		protected var dead:Boolean = false;
-		
+		protected var dead:Boolean = false;		
 		protected var invincible:Boolean = false;
+		
+		protected var blink:Blink;
 		
 		public function BaseActor(x:Number=0, y:Number=0)
 		{
@@ -43,6 +46,11 @@ package entities
 		{
 			trace("destroy", this);
 			FP.world.remove(this);
+		}
+		
+		protected function checkForDamage():void
+		{
+			// abtract
 		}
 		
 		protected function takeDamage():void

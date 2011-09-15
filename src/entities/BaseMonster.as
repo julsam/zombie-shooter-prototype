@@ -41,8 +41,6 @@ package entities
 			timerFindPath += FP.elapsed;
 			if( timerFindPath > 0.5 ) // total duration before remove()
 			{
-				//Log.CustomMetric("mousePressedTest");
-				//Log.LevelCounterMetric("clickCount", "level1");
 				var path:FlxPath;
 				path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
 				this.flx.followPath(path, speed);
@@ -50,11 +48,6 @@ package entities
 			}
 			
 			super.update();
-		}
-		
-		protected function checkForBullet():void
-		{
-			// abstract
 		}
 		
 		override protected function takeDamage():void
