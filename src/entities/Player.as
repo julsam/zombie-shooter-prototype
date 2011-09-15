@@ -17,10 +17,8 @@ package entities
 	public class Player extends BaseActor
 	{
 		public var flx:FlxTween;               // flixel movement and path movement controller
-		public var justMoved:Boolean = false;  // check if entity has moved in since last frame
 		
 		private var vector:Point;
-		private var velocity:Point = new Point();
 		
 		private const NSPEED:Number = 100;
 		private const RSPEED:Number = 200;
@@ -46,8 +44,9 @@ package entities
 			sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
 			sprite.play("standDown");
 			
-			blink = new Blink(sprite);
+			blink = new Blink(sprite, 2, 0.15);
 			
+			baseline = 10;
 			setHitbox(6, 8, 3, 2);
 			graphic	= sprite;
 			
@@ -61,7 +60,6 @@ package entities
 		
 		override public function update():void
 		{
-			justMoved = false;
 			// Shoot
 			if(Input.mousePressed || Input.check("Shoot"))
 			{
@@ -83,35 +81,35 @@ package entities
 			updateMovement();
 			updateCollision();			
 			
-			var axe:Number = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+			rotation = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
 			
 			var dirAnim:String;
-			if (axe >= 225 && axe <= 315)
+			if (rotation >= 225 && rotation <= 315)
 			{
 				dirAnim = "Down";
 			}
-			if (axe >= 315 || axe <= 45)
+			if (rotation >= 315 || rotation <= 45)
 			{
 				dirAnim = "Right";
 			}
-			if (axe >= 45 && axe <= 135)
+			if (rotation >= 45 && rotation <= 135)
 			{
 				dirAnim = "Up";
 			}
-			if (axe >= 135 && axe <= 225)
+			if (rotation >= 135 && rotation <= 225)
 			{
 				dirAnim = "Left";
 			}
 			
 			if (Input.check("Up") || Input.check("Down") || Input.check("Left") || Input.check("Right"))
-			{				
-				justMoved = true;
+			{
 				dirAnim = "walk"+dirAnim;
 			}
 			else
 			{
 				dirAnim = "stand"+dirAnim;
 			}
+			
 			sprite.play(dirAnim);
 			
 			checkForDamage();
@@ -126,9 +124,9 @@ package entities
 			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
 			if (e)
 			{
-				if (!this.blink.enabled && this.collideWith(e, this.x, this.y))
+				if (!this.blink.active && this.collideWith(e, this.x, this.y))
 				{
-					blink.enable();
+					blink.setActive();
 					trace('COLLIDE!');
 				}
 			}

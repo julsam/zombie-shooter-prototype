@@ -1,0 +1,11 @@
+triggerBlock(int x, int y);
+triggerArea(int x, int y, int width, int height);
+
+spawnEntity() spawnBullet() spawnExplosionParticle()
+
+decrement / increment skill / ability
+slot, stack
+
+stunned getStunned()
+
+baseItem

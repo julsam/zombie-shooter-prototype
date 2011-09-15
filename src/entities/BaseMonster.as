@@ -22,7 +22,9 @@ package entities
 		protected var image:Image;
 		protected var sprite:Spritemap;
 		
+		protected var MonsterID:int; // unique ID
 		protected var childType:String;
+		protected var stunned:Number; // the amount of time the entity is stunned		
 		
 		public function BaseMonster(x:Number, y:Number)
 		{
@@ -50,7 +52,7 @@ package entities
 			super.update();
 		}
 		
-		override protected function takeDamage():void
+		override protected function takeDamage(damageAmount:int=0):void
 		{
 			health--;
 			
@@ -59,8 +61,13 @@ package entities
 			if (health <= 0)
 			{
 				collidable = false;
-				dead = true;
+				alive = false;
 			}
+		}
+		
+		public function dropSouls():void
+		{
+			// TODO
 		}
 	}
 }

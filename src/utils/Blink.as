@@ -12,10 +12,10 @@ package utils
 		protected var timer:Number;
 		protected var rateTimer:Number;
 		protected var mode:int = 0;
-		public var enabled:Boolean = false;
+		public var active:Boolean = false;
 		public var color:uint;
 		
-		public function Blink(image:Image=null, duration:Number=4, rate:Number=0.25)
+		public function Blink(image:Image=null, duration:Number=2, rate:Number=0.2)
 		{
 			this.image = image;
 			this.duration = this.timer = duration;
@@ -24,7 +24,7 @@ package utils
 		
 		public function update():void
 		{
-			if (enabled)
+			if (active)
 			{
 				timer -= FP.elapsed;
 				rateTimer -= FP.elapsed;
@@ -46,7 +46,7 @@ package utils
 				if (timer < 0)
 				{
 					restoreImage();
-					enabled = false;
+					active = false;
 					timer = duration;
 				}
 			}
@@ -56,11 +56,16 @@ package utils
 		{
 			image.color = 0xFFFFFF;
 			image.alpha = 1;			
+		}		
+		
+		public function isActive():Boolean
+		{
+			return (this.active ? true : false);
 		}
 		
-		public function enable():void
+		public function setActive():void
 		{
-			this.enabled = true;
+			this.active = true;
 		}
 		
 		public function reset():void
@@ -71,6 +76,11 @@ package utils
 		public function stop():void
 		{
 			restoreImage();
+		}
+		
+		public function pause():void
+		{
+			// TODO
 		}
 		
 		public function setColor(color:uint=0xAA3333):void

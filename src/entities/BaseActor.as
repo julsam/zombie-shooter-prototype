@@ -18,17 +18,31 @@ package entities
 	public class BaseActor extends Entity
 	{
 		public var pathActor:FlxPath;
+		protected var blink:Blink;
 		
+		protected var insideOfRoomID:int;
+		
+		// attributes
 		protected var speed:Number;
 		protected var health:int;
-		protected var dead:Boolean = false;		
-		protected var invincible:Boolean = false;
+		protected var maxHealth:int;
+		protected var mana:int;
+		protected var maxMana:int;
+		protected var strength:int;
+		protected var weapon:BaseWeapon = null;
 		
-		protected var blink:Blink;
+		// state
+		protected var alive:Boolean = true;
+		protected var invincible:Boolean = false;
+		protected var burning:Boolean = false;
+		
+		public var rotation:Number;
+		protected var velocity:Point = new Point();
+		protected var baseline:int; // used for depth
 		
 		public function BaseActor(x:Number=0, y:Number=0)
 		{
-			super(x, y);	
+			super(x, y);
 		}
 		override public function update():void
 		{			
@@ -39,7 +53,7 @@ package entities
 		
 		protected function updateDepth():void
 		{
-			layer = -y - height;
+			layer = -y -baseline;
 		}
 		
 		protected function destroy():void
@@ -50,12 +64,23 @@ package entities
 		
 		protected function checkForDamage():void
 		{
-			// abtract
+			// Abtract
 		}
 		
-		protected function takeDamage():void
+		protected function takeDamage(damageAmount:int=0):void
 		{
-			// abtract
+			// Abtract
+		}
+		
+		protected function attack(actor:BaseActor):void
+		{
+			// Abtract
+		}
+		
+		public function getInBlockCoords():Point
+		{
+			// TODO
+			return new Point();
 		}
 	}
 }

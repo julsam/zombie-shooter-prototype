@@ -26,6 +26,7 @@ package entities
 			this.y = y;
 			
 			centerOrigin();
+			baseline = 10;
 			setHitbox(10, 10);
 			
 			sprite = new Spritemap(Assets.MONSTER1, 8, 8);
@@ -45,7 +46,7 @@ package entities
 		override public function update():void
 		{			
 			// if it's dead, on the floor, stand there for a few seconds with death animation
-			if (dead && sprite.currentAnim == "death")
+			if (!alive && sprite.currentAnim == "death")
 			{
 				timer += FP.elapsed;
 				
@@ -57,7 +58,7 @@ package entities
 				
 				return;
 			}
-			if (dead)
+			if (!alive)
 			{
 				sprite.play("explode");
 			}
