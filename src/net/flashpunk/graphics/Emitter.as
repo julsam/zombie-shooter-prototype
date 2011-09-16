@@ -110,7 +110,7 @@
 				rect = type._frame;
 				
 				// get position
-				td = (type._ease == null) ? t : type._ease(t);				
+				td = (type._ease == null) ? t : type._ease(t);
 				_p.x = _point.x + p._x + p._moveX * td;
 				_p.y = _point.y + p._y + p._moveY * td;
 				

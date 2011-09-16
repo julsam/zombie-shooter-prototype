@@ -27,6 +27,9 @@ package
 		[Embed(source = '../assets/gfx/shadowSpot.png')] 
 		public static const SHADOW:Class;
 		
+		[Embed(source = '../assets/gfx/explosion.png')] 
+		public static const EXPLOSION:Class;
+		
 		/*** SFX ***/
 		
 		[Embed(source="../assets/sfx/AlienShooter/pistol_shot.mp3")]

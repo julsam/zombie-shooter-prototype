@@ -24,6 +24,10 @@ package utils
 			return ((centerX-FP.camera.x) / FP.width) * 2 - 1;
 		}
 		
+		public static function rand(min:int, max:int):int
+		{
+			return Math.random() * (max - min + 1) + min;
+		}		
 		
 		public static function checkDomain(allowed:*):Boolean
 		{
