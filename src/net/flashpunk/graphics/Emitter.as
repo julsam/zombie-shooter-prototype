@@ -110,10 +110,13 @@
 				rect = type._frame;
 				
 				// get position
-				td = (type._ease == null) ? t : type._ease(t);
+				td = (type._ease == null) ? t : type._ease(t);				
 				_p.x = _point.x + p._x + p._moveX * td;
 				_p.y = _point.y + p._y + p._moveY * td;
-				p._moveY += p._gravity * td;
+				
+				// UGLY HACK to stop particles moving when not active (for game pausing for example)
+				if (active)
+					p._moveY += p._gravity * td;
 				
 				// get frame
 				rect.x = rect.width * type._frames[uint(td * type._frameCount)];

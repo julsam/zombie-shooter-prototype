@@ -9,6 +9,7 @@ package
 		public static var
 			time:int = 0,
 			deaths:int = 0,
+			pause:Boolean = false,
 			restartLevel:Boolean = false,
 			lightingEnabled:Boolean = true,
 			

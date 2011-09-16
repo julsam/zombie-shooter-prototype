@@ -17,7 +17,6 @@ package
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
-	
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
@@ -26,8 +25,6 @@ package
 	{
 		public var grid:Grid;
 		public var pf:FlxPathFinding;
-		public var unit:Zombie;
-		public var unit2:Zombie;
 		
 		private var timer:Number = 0;
 		
@@ -46,7 +43,7 @@ package
 			Input.define("Up", Key.UP, Key.Z);
 			Input.define("Down", Key.DOWN, Key.S);
 			Input.define("Run", Key.SHIFT);
-			Input.define("Shoot", Key.SPACE);
+			Input.define("Pause", Key.SPACE);
 			
 			add(G.level = new Level(Assets.TEST1));
 			
@@ -54,16 +51,38 @@ package
 			
 			G.level.load();
 			
-			// create an unit
-			unit = new Zombie(400, 200);
-			add(unit);
-			unit2 = new Zombie(200, 200);
-			add(unit2);
+			add(new Zombie(400, 200));
+			add(new Zombie(200, 200));
 		}
 		
 		override public function update():void
 		{
-			super.update();
+			if (Input.released("Pause"))
+			{
+				G.pause = !G.pause;
+			}
+			
+			if (!G.pause)
+			{
+				super.update();
+			}
+			else
+			{
+				var ea:Array = [];
+				FP.world.getType("EmitterEntity", ea);
+				for each (var _ee:EmitterEntity in ea)
+				{
+					_ee.emitter.active = false;
+					_ee.emitter
+				}
+				
+				var List:Array = [];
+				FP.world.getType("menu", List);
+				for each (var _menu:* in List)
+				{
+					_menu.update();
+				}
+			}
 		}
 		
 	}
