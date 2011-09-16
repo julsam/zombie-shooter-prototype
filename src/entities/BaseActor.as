@@ -14,9 +14,11 @@ package entities
 	import net.flashpunk.utils.Key;
 	
 	import net.flxpunk.FlxPath;
+	import net.flxpunk.FlxTween;
 	
 	public class BaseActor extends Entity
 	{
+		public var flx:FlxTween;               // flixel movement and path movement controller
 		public var pathActor:FlxPath;
 		protected var blink:Blink;
 		
@@ -48,12 +50,12 @@ package entities
 		{			
 			super.update();
 			
-			updateDepth();
+			this.updateDepth();
 		}
 		
 		protected function updateDepth():void
 		{
-			layer = -y -baseline;
+			this.layer = -this.y -this.baseline;
 		}
 		
 		protected function destroy():void
@@ -67,7 +69,7 @@ package entities
 			// Abtract
 		}
 		
-		protected function takeDamage(damageAmount:int=0):void
+		protected function takeDamage(amountOfDamage:int=0):void
 		{
 			// Abtract
 		}

@@ -16,7 +16,7 @@ package entities
 	
 	public class Player extends BaseActor
 	{
-		public var flx:FlxTween;               // flixel movement and path movement controller
+		public var currentWeapon:BaseWeapon = null;
 		
 		private var vector:Point;
 		
@@ -31,31 +31,31 @@ package entities
 		{
 			this.x = x;
 			this.y = y;
-			vector = new Point(0, 0);
+			this.vector = new Point(0, 0);
 			
-			sprite = new Spritemap(Assets.PLAYER, 11, 16);
-			sprite.add("standDown", [0]);
-			sprite.add("standRight", [8]);
-			sprite.add("standUp", [6]);
-			sprite.add("standLeft", [10]);
-			sprite.add("walkDown", [4, 0, 5, 0], 7, true);
-			sprite.add("walkUp", [6, 1, 7, 1], 7, true);
-			sprite.add("walkRight", [8, 2, 9, 2], 7, true);
-			sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
-			sprite.play("standDown");
+			this.sprite = new Spritemap(Assets.PLAYER, 11, 16);
+			this.sprite.add("standDown", [0]);
+			this.sprite.add("standRight", [8]);
+			this.sprite.add("standUp", [6]);
+			this.sprite.add("standLeft", [10]);
+			this.sprite.add("walkDown", [4, 0, 5, 0], 7, true);
+			this.sprite.add("walkUp", [6, 1, 7, 1], 7, true);
+			this.sprite.add("walkRight", [8, 2, 9, 2], 7, true);
+			this.sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
+			this.sprite.play("standDown");
 			
-			blink = new Blink(sprite, 2, 0.15);
+			this.blink = new Blink(this.sprite, 2, 0.15);
 			
-			baseline = 10;
-			setHitbox(6, 8, 3, 2);
-			graphic	= sprite;
+			this.baseline = 10;
+			this.setHitbox(6, 8, 3, 2);
+			this.graphic = this.sprite;
 			
-			type = "Player";
+			this.type = "Player";
 			
-			sprite.centerOO();
+			this.sprite.centerOO();
 			
-			flx = new FlxTween(this);
-			addTween(flx, true);
+			this.flx = new FlxTween(this);
+			addTween(this.flx, true);
 		}
 		
 		override public function update():void
@@ -71,32 +71,32 @@ package entities
 			if(Input.check("Run"))
 			{
 				SoundMgr.playSound(SoundMgr.sfx_miss_hit);
-				speed = RSPEED; // run speed
+				this.speed = RSPEED; // run speed
 			}
 			else
 			{
-				speed = NSPEED; // normal speed
+				this.speed = NSPEED; // normal speed
 			}
 			
-			updateMovement();
-			updateCollision();			
+			this.updateMovement();
+			this.updateCollision();			
 			
-			rotation = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+			this.rotation = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
 			
 			var dirAnim:String;
-			if (rotation >= 225 && rotation <= 315)
+			if (this.rotation >= 225 && this.rotation <= 315)
 			{
 				dirAnim = "Down";
 			}
-			if (rotation >= 315 || rotation <= 45)
+			if (this.rotation >= 315 || this.rotation <= 45)
 			{
 				dirAnim = "Right";
 			}
-			if (rotation >= 45 && rotation <= 135)
+			if (this.rotation >= 45 && this.rotation <= 135)
 			{
 				dirAnim = "Up";
 			}
-			if (rotation >= 135 && rotation <= 225)
+			if (this.rotation >= 135 && this.rotation <= 225)
 			{
 				dirAnim = "Left";
 			}
@@ -110,24 +110,24 @@ package entities
 				dirAnim = "stand"+dirAnim;
 			}
 			
-			sprite.play(dirAnim);
+			this.sprite.play(dirAnim);
 			
-			checkForDamage();
+			this.checkForDamage();
 			
 			super.update();
 		}
 		
 		override protected function checkForDamage():void
 		{
-			blink.update();
+			this.blink.update();
 			
 			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
 			if (e)
 			{
 				if (!this.blink.active && this.collideWith(e, this.x, this.y))
 				{
-					blink.setActive();
-					trace('COLLIDE!');
+					this.blink.setActive();
+					trace('Getting hurt!');
 				}
 			}
 		}
@@ -142,37 +142,37 @@ package entities
 			if (Input.check("Right")) movement.x++;
 			
 			
-			vector.x = speed * FP.elapsed * movement.x;
-			vector.y = speed * FP.elapsed * movement.y;
+			this.vector.x = this.speed * FP.elapsed * movement.x;
+			this.vector.y = this.speed * FP.elapsed * movement.y;
 		}
 		
 		protected function updateCollision():void
 		{
-			x += vector.x;
+			this.x += this.vector.x;
 			
-			if (collide("Solid", x + vector.x, y + vector.y))
+			if (collide("Solid", this.x + this.vector.x, this.y + this.vector.y))
 			{				
-				if (FP.sign(vector.x) > 0)
+				if (FP.sign(this.vector.x) > 0)
 				{
-					x -= vector.x;
+					this.x -= this.vector.x;
 				}
 				else
 				{
-					x -= vector.x;
+					this.x -= this.vector.x;
 				}
 			}
 			
-			y += vector.y;
+			this.y += this.vector.y;
 			
-			if (collide("Solid", x + vector.x, y + vector.y))
+			if (collide("Solid", this.x + this.vector.x, this.y + this.vector.y))
 			{				
-				if (FP.sign(vector.y) > 0)
+				if (FP.sign(this.vector.y) > 0)
 				{
-					y -= vector.y;
+					this.y -= this.vector.y;
 				}
 				else
 				{
-					y -= vector.y;
+					this.y -= this.vector.y;
 				}
 			}			
 		}

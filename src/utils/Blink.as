@@ -2,7 +2,6 @@ package utils
 {
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
-	import net.flashpunk.graphics.Spritemap;
 	
 	public class Blink
 	{
@@ -24,38 +23,38 @@ package utils
 		
 		public function update():void
 		{
-			if (active)
+			if (this.active)
 			{
-				timer -= FP.elapsed;
-				rateTimer -= FP.elapsed;
+				this.timer -= FP.elapsed;
+				this.rateTimer -= FP.elapsed;
 				
-				if (rateTimer < 0 && mode == 0)
+				if (this.rateTimer < 0 && this.mode == 0)
 				{
-					image.color = 0xAA3333;
-					image.alpha = 0.75;
-					rateTimer = rate;
-					mode = 1;
+					this.image.color = 0xAA3333;
+					this.image.alpha = 0.75;
+					this.rateTimer = rate;
+					this.mode = 1;
 				}
 				else if (rateTimer < 0 && mode == 1)
 				{					
-					restoreImage();
-					rateTimer = rate;
-					mode = 0;
+					this.restoreImage();
+					this.rateTimer = rate;
+					this.mode = 0;
 				}
 				
-				if (timer < 0)
+				if (this.timer < 0)
 				{
-					restoreImage();
-					active = false;
-					timer = duration;
+					this.restoreImage();
+					this.active = false;
+					this.timer = duration;
 				}
 			}
 		}
 		
 		protected function restoreImage():void
 		{
-			image.color = 0xFFFFFF;
-			image.alpha = 1;			
+			this.image.color = 0xFFFFFF;
+			this.image.alpha = 1;			
 		}		
 		
 		public function isActive():Boolean
@@ -70,12 +69,12 @@ package utils
 		
 		public function reset():void
 		{			
-			timer = duration;
+			this.timer = duration;
 		}
 		
 		public function stop():void
 		{
-			restoreImage();
+			this.restoreImage();
 		}
 		
 		public function pause():void

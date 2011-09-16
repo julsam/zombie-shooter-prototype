@@ -16,7 +16,6 @@ package entities
 	
 	public class BaseMonster extends BaseActor
 	{
-		public var flx:FlxTween;
 		protected var timerFindPath:Number = 0;
 		
 		protected var image:Image;
@@ -30,38 +29,38 @@ package entities
 		{
 			super(x, y);
 			
-			flx = new FlxTween(this);
-			addTween(flx, true);
-			flx.drag.x = 400;
-			flx.drag.y = 400;
+			this.flx = new FlxTween(this);
+			addTween(this.flx, true);
+			this.flx.drag.x = 400;
+			this.flx.drag.y = 400;
 			
-			type = "Monster";
+			this.type = "Monster";
 		}
 		
 		override public function update():void
 		{
-			timerFindPath += FP.elapsed;
-			if( timerFindPath > 0.5 ) // total duration before remove()
+			this.timerFindPath += FP.elapsed;
+			if (this.timerFindPath > 0.5) // total duration before remove()
 			{
 				var path:FlxPath;
 				path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
-				this.flx.followPath(path, speed);
-				timerFindPath = 0;
+				this.flx.followPath(path, this.speed);
+				this.timerFindPath = 0;
 			}
 			
 			super.update();
 		}
 		
-		override protected function takeDamage(damageAmount:int=0):void
+		override protected function takeDamage(amountOfDamage:int=0):void
 		{
-			health--;
+			this.health--;
 			
-			FP.world.add(new EmitterEntity(x, y));
+			FP.world.add(new EmitterEntity(this.x, this.y));
 			
 			if (health <= 0)
 			{
-				collidable = false;
-				alive = false;
+				this.collidable = false;
+				this.alive = false;
 			}
 		}
 		

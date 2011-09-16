@@ -26,64 +26,64 @@ package entities
 			this.y = y;
 			
 			centerOrigin();
-			baseline = 10;
+			this.baseline = 10;
 			setHitbox(10, 10);
 			
-			sprite = new Spritemap(Assets.MONSTER1, 8, 8);
-			sprite.add("stand", [0]);
-			sprite.add("explode", [16, 17, 18, 18, 20], 5, false);
-			sprite.add("death", [20]);
-			sprite.play("stand");
+			this.sprite = new Spritemap(Assets.MONSTER1, 8, 8);
+			this.sprite.add("stand", [0]);
+			this.sprite.add("explode", [16, 17, 18, 18, 20], 5, false);
+			this.sprite.add("death", [20]);
+			this.sprite.play("stand");
 			
-			graphic = sprite;
+			this.graphic = this.sprite;
 			//sprite.centerOO();
 			
-			speed = FP.rand(10) + 55 ;
-			health = 10;
-			childType = "Zombie";
+			this.speed = FP.rand(10) + 55 ;
+			this.health = 10;
+			this.childType = "Zombie";
 		}
 		
 		override public function update():void
 		{			
 			// if it's dead, on the floor, stand there for a few seconds with death animation
-			if (!alive && sprite.currentAnim == "death")
+			if (!this.alive && this.sprite.currentAnim == "death")
 			{
-				timer += FP.elapsed;
+				this.timer += FP.elapsed;
 				
 				// TODO queue list that contain entity to remove if too many
-				if( timer > 10 ) // total duration before remove()
+				if (this.timer > 10) // total duration before remove()
 				{
 					this.destroy();
 				}
 				
 				return;
 			}
-			if (!alive)
+			if (!this.alive)
 			{
-				sprite.play("explode");
+				this.sprite.play("explode");
 			}
 			else
 			{				
-				x += flx.deltaX;
-				y += flx.deltaY;
+				this.x += this.flx.deltaX;
+				this.y += this.flx.deltaY;
 				
-				sprite.play("stand");
+				this.sprite.play("stand");
 			}
 			
-			if (sprite.currentAnim == "explode" && sprite.complete)
+			if (this.sprite.currentAnim == "explode" && this.sprite.complete)
 			{	
 				//this.destroy();
-				sprite.play("death");
+				this.sprite.play("death");
 			}
 			
-			checkForDamage();
+			this.checkForDamage();
 			
 			super.update();
 		}
 		
 		override protected function checkForDamage():void
 		{
-			var b:Bullet = Bullet(collide("Bullet", x-4, y-4));
+			var b:Bullet = Bullet(collide("Bullet", this.x - 4, this.y - 4));
 			if (b && !b.hasCollided)
 			{
 				this.takeDamage();

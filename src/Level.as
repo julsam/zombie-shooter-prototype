@@ -28,18 +28,18 @@ package
 		{
 			var file:ByteArray = new data;
 			var str:String = file.readUTFBytes(file.length);
-			xml = new XML(str);
+			this.xml = new XML(str);
 			
-			FP.width = xml.width;
-			FP.height = xml.height;
+			FP.width = this.xml.width;
+			FP.height = this.xml.height;
 			
 			FP.world.addGraphic(new Backdrop(Assets.FLOOR_BG, true, true));
 			
-			belowTiles = createTilemap(belowTiles, FP.height);
-			levelTiles = createTilemap(levelTiles, 0);
-			aboveTiles = createTilemap(aboveTiles, -FP.height);
+			this.belowTiles = createTilemap(belowTiles, FP.height);
+			this.levelTiles = createTilemap(levelTiles, 0);
+			this.aboveTiles = createTilemap(aboveTiles, -FP.height);
 			
-			grid = new Grid(FP.width, FP.height, G.grid, G.grid);
+			this.grid = new Grid(FP.width, FP.height, G.grid, G.grid);
 		}
 		
 		private function createTilemap(tilemap:Tilemap, layer:int):Tilemap
@@ -65,14 +65,14 @@ package
 			// Tiles Above
 			for each (o in xml.cave[0].tile)
 			{
-				levelTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
+				this.levelTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
 			}
 			
 			// Solids
 			for each (o in xml.solids[0].rect)
 			{
 				FP.world.add(new Solid(o.@x, o.@y, o.@w, o.@h));
-				grid.setRect(o.@x / G.grid, o.@y / G.grid, o.@w / G.grid, o.@h / G.grid, true);
+				this.grid.setRect(o.@x / G.grid, o.@y / G.grid, o.@w / G.grid, o.@h / G.grid, true);
 			}
 			
 			// Lights
@@ -86,16 +86,16 @@ package
 				}
 			}
 			
-			// Tiles Above Deco
+			// Tiles Above Deco // TODO change name to above/top
 			if (xml.roof[0])
 			{
 				for each (o in xml.roof[0].tile) 
 				{
-					aboveTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
+					this.aboveTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
 				}
 			}
 			
-			pathFinding = new FlxPathFinding(grid);
+			this.pathFinding = new FlxPathFinding(grid);
 		}
 	}
 }
