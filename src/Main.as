@@ -1,13 +1,15 @@
 package
 {
+	import Playtomic.*;
+	
 	import flash.display.*;
 	import flash.ui.ContextMenu;
 	
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	import net.flashpunk.ScreenRetro;
-	
-	import Playtomic.*;
+	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
 	
 	public class Main extends Engine
 	{

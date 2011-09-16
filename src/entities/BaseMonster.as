@@ -55,7 +55,7 @@ package entities
 		{
 			this.health--;
 			
-			FP.world.add(new EmitterEntity(this.x, this.y));
+			FP.world.add(new Explosion(this.x, this.y));
 			
 			if (health <= 0)
 			{

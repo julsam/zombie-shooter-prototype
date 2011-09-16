@@ -34,6 +34,7 @@ package
 		
 		override public function begin():void
 		{
+			
 			// level size
 			FP.width = G.windowWidth;
 			FP.height = G.windowHeight;
@@ -59,7 +60,10 @@ package
 		{
 			if (Input.released("Pause"))
 			{
-				G.pause = !G.pause;
+				if (G.pause)
+					this.unpause();
+				else
+					this.pause();				
 			}
 			
 			if (!G.pause)
@@ -68,20 +72,46 @@ package
 			}
 			else
 			{
-				var ea:Array = [];
-				FP.world.getType("EmitterEntity", ea);
-				for each (var _ee:EmitterEntity in ea)
-				{
-					_ee.emitter.active = false;
-					_ee.emitter
-				}
-				
 				var List:Array = [];
 				FP.world.getType("menu", List);
 				for each (var _menu:* in List)
 				{
 					_menu.update();
 				}
+			}
+		}
+		
+		public function pause():void
+		{			
+			G.pause = true;			
+			this.setEmittersActive("EmitterEntity", false);
+			this.setEmittersActive("Explosion", false);
+		}
+		
+		public function unpause():void
+		{
+			G.pause = false;			
+			this.setEmittersActive("EmitterEntity", true);			
+			this.setEmittersActive("Explosion", true);
+		}
+		
+		override public function focusGained():void
+		{
+			this.unpause();
+		}
+		
+		override public function focusLost():void
+		{
+			this.pause();
+		}
+		
+		public function setEmittersActive(typeName:String, isActive:Boolean):void
+		{
+			var list:Array = [];
+			FP.world.getType(typeName, list);
+			for each (var el:* in list)
+			{
+				el.emitter.active = isActive;
 			}
 		}
 		
