@@ -13,6 +13,7 @@ package
 		private const SPEED:Number = 400;
 		private var direction:Point = new Point();
 		private var velocity:Point = new Point;
+		private var speed:Point = new Point(SPEED, SPEED);
 		private var angle:Number;
 		
 		public var hasCollided:Boolean = false; // if has collide, it don't make any more damage to monsters
@@ -25,18 +26,19 @@ package
 			super(x, y, graphic);
 
 			direction = _direction;
-
-			angle = FP.angle(x, y, direction.x, direction.y);
-			
-			FP.angleXY(velocity, angle, SPEED * FP.elapsed);
+			angle = FP.angle(x, y, direction.x, direction.y);			
 			
 			type = "Bullet";
 		}
 		
 		override public function update():void
 		{
-			x += velocity.x;
-			y += velocity.y;
+			FP.angleXY(velocity, angle, SPEED * FP.elapsed);
+			
+			//x += speed.x * FP.elapsed * velocity.x;
+			//y += speed.y * FP.elapsed * velocity.y;
+			
+			moveBy(velocity.x, velocity.y);
 			
 			// if Bullet goes out of the game // TODO: if out of the screen
 			if (x > G.windowWidth + 100	|| y > G.windowHeight + 100 

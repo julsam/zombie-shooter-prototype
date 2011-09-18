@@ -31,6 +31,10 @@ package entities
 			
 			this.flx = new FlxTween(this);
 			addTween(this.flx, true);
+			
+			// without this 2 params the entity behaviour 
+			// is completely fucked when it have no more
+			// nodes in his path (it reached his target)
 			this.flx.drag.x = 400;
 			this.flx.drag.y = 400;
 			
@@ -42,9 +46,13 @@ package entities
 			this.timerFindPath += FP.elapsed;
 			if (this.timerFindPath > 0.5) // total duration before remove()
 			{
+				//TODO : find an other way, currently too slow with many entities
 				var path:FlxPath;
 				path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
-				this.flx.followPath(path, this.speed);
+				if (path != null)
+				{
+					this.flx.followPath(path, this.speed);
+				}
 				this.timerFindPath = 0;
 			}
 			

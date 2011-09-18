@@ -26,6 +26,7 @@ package entities
 		
 		// attributes
 		protected var speed:Number;
+		protected var normalSpeed:Number;
 		protected var health:int;
 		protected var maxHealth:int;
 		protected var mana:int;
@@ -47,7 +48,7 @@ package entities
 			super(x, y);
 		}
 		override public function update():void
-		{			
+		{
 			super.update();
 			
 			this.updateDepth();

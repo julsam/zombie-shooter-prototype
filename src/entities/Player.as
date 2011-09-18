@@ -10,6 +10,7 @@ package entities
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	
 	import net.flxpunk.FlxTween;
 	
 	import utils.Blink;
@@ -17,13 +18,7 @@ package entities
 	public class Player extends BaseActor
 	{
 		public var currentWeapon:BaseWeapon = null;
-		
-		private var vector:Point;
-		
-		private const NSPEED:Number = 100;
-		private const RSPEED:Number = 200;
-		private var FRICTION:int = 250;
-		private var MAXSPEED:int = 125;
+		public var runningSpeed:Number;
 		
 		public var sprite:Spritemap;
 		
@@ -31,7 +26,7 @@ package entities
 		{
 			this.x = x;
 			this.y = y;
-			this.vector = new Point(0, 0);
+			this.velocity = new Point(0, 0);
 			
 			this.sprite = new Spritemap(Assets.PLAYER, 11, 16);
 			this.sprite.add("standDown", [0]);
@@ -46,6 +41,8 @@ package entities
 			
 			this.blink = new Blink(this.sprite, 2, 0.15);
 			
+			this.speed = this.normalSpeed = 100;
+			this.runningSpeed = 150;
 			this.baseline = 10;
 			this.setHitbox(6, 8, 3, 2);
 			this.graphic = this.sprite;
@@ -61,21 +58,20 @@ package entities
 		override public function update():void
 		{
 			// Shoot
-			if(Input.mousePressed || Input.check("Shoot"))
+			if (Input.mousePressed || Input.check("Shoot"))
 			{
 				SoundMgr.playSound(SoundMgr.sfx_pistol_shot);
 				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
 			}
 			
 			// Run
-			if(Input.check("Run"))
+			if (Input.check("Run"))
 			{
-				SoundMgr.playSound(SoundMgr.sfx_miss_hit);
-				this.speed = RSPEED; // run speed
+				this.speed = this.runningSpeed;
 			}
 			else
 			{
-				this.speed = NSPEED; // normal speed
+				this.speed = this.normalSpeed;
 			}
 			
 			this.updateMovement();
@@ -83,6 +79,30 @@ package entities
 			
 			this.rotation = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
 			
+			this.updateAnimation();
+			
+			this.checkForDamage();
+			
+			super.update();
+		}
+		
+		override protected function checkForDamage():void
+		{
+			this.blink.update();
+			
+			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
+			if (e)
+			{
+				if (!this.blink.active && this.collideWith(e, this.x, this.y))
+				{
+					this.blink.setActive();
+					trace('Getting hurt!');
+				}
+			}
+		}
+		
+		protected function updateAnimation():void
+		{
 			var dirAnim:String;
 			if (this.rotation >= 225 && this.rotation <= 315)
 			{
@@ -111,25 +131,6 @@ package entities
 			}
 			
 			this.sprite.play(dirAnim);
-			
-			this.checkForDamage();
-			
-			super.update();
-		}
-		
-		override protected function checkForDamage():void
-		{
-			this.blink.update();
-			
-			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
-			if (e)
-			{
-				if (!this.blink.active && this.collideWith(e, this.x, this.y))
-				{
-					this.blink.setActive();
-					trace('Getting hurt!');
-				}
-			}
 		}
 		
 		protected function updateMovement():void
@@ -142,37 +143,37 @@ package entities
 			if (Input.check("Right")) movement.x++;
 			
 			
-			this.vector.x = this.speed * FP.elapsed * movement.x;
-			this.vector.y = this.speed * FP.elapsed * movement.y;
+			this.velocity.x = this.speed * FP.elapsed * movement.x;
+			this.velocity.y = this.speed * FP.elapsed * movement.y;
 		}
 		
 		protected function updateCollision():void
 		{
-			this.x += this.vector.x;
+			this.x += this.velocity.x;
 			
-			if (collide("Solid", this.x + this.vector.x, this.y + this.vector.y))
-			{				
-				if (FP.sign(this.vector.x) > 0)
+			if (collide("Solid", this.x + this.velocity.x, this.y))
+			{
+				if (FP.sign(this.velocity.x) > 0)
 				{
-					this.x -= this.vector.x;
+					this.x += -this.velocity.x;
 				}
 				else
 				{
-					this.x -= this.vector.x;
+					this.x -= this.velocity.x;
 				}
 			}
 			
-			this.y += this.vector.y;
+			this.y += this.velocity.y;
 			
-			if (collide("Solid", this.x + this.vector.x, this.y + this.vector.y))
-			{				
-				if (FP.sign(this.vector.y) > 0)
+			if (collide("Solid", this.x, this.y + this.velocity.y))
+			{
+				if (FP.sign(this.velocity.y) > 0)
 				{
-					this.y -= this.vector.y;
+					this.y += -this.velocity.y;
 				}
 				else
 				{
-					this.y -= this.vector.y;
+					this.y -= this.velocity.y;
 				}
 			}			
 		}
