@@ -49,12 +49,18 @@ package
 			
 			add(G.level = new Level(Assets.TEST1));
 			
-			add(G.lighting = new Lighting());
+			if (G.lightingEnabled)
+				add(G.lighting = new Lighting());
 			
 			G.level.load();
 			
 			add(new Zombie(400, 200));
 			add(new Zombie(200, 200));
+			for (var j:int = 0; j < 10; j++)
+			{
+				//add(new Zombie(400, 32 + (j * 10)));
+			}
+			
 		}
 		
 		override public function update():void

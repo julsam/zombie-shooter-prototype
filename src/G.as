@@ -19,15 +19,13 @@ package
 			lighting:Lighting,
 			level:Level;
 		
-				
 		public static const grid:int = 8;
+		public static const TILE_SIZE:int = 16;
 		
 		public static const windowWidth:int = 640;
 		public static const windowHeight:int = 480;
 		
-		public static const TILESET_NB_COLUMNS:int = 8;
-		
-		public static const FIXED_FRAME_TIME:Number = 1.0 / 60.0;
+		public static const TILESET_NB_COLUMNS:int = 2;
 		
 		public static var volumeMusic:Number = 1;
 		public static var volumeSound:Number = 0.1;

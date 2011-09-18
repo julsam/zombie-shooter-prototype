@@ -4,12 +4,12 @@ package
 	
 	public class Assets
 	{
-		[Embed(source = '../assets/levels/zlt2.oel',  mimeType = "application/octet-stream")] 
+		[Embed(source = '../assets/levels/zlt3.oel',  mimeType = "application/octet-stream")] 
 		public static const TEST1:Class;
 		
 		/*** GFX ***/
 		
-		[Embed(source = '../assets/gfx/tileset.png')] 
+		[Embed(source = '../assets/gfx/tileset2.png')] 
 		public static const TILESET:Class;
 		
 		[Embed(source = '../assets/gfx/floor.png')] 

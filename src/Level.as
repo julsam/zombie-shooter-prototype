@@ -45,7 +45,7 @@ package
 		private function createTilemap(tilemap:Tilemap, layer:int):Tilemap
 		{
 			var tilemapEntity:Entity = new Entity();
-			tilemap = new Tilemap(Assets.TILESET, FP.width, FP.height, G.grid, G.grid);
+			tilemap = new Tilemap(Assets.TILESET, FP.width, FP.height, G.TILE_SIZE, G.TILE_SIZE);
 			tilemapEntity.graphic = tilemap;
 			tilemapEntity.layer = layer;
 			FP.world.add(tilemapEntity);
@@ -65,7 +65,7 @@ package
 			// Tiles Above
 			for each (o in xml.cave[0].tile)
 			{
-				this.levelTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
+				this.levelTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, (G.TILESET_NB_COLUMNS * (o.@ty/G.TILE_SIZE)) + (o.@tx/G.TILE_SIZE));
 			}
 			
 			// Solids
@@ -91,7 +91,7 @@ package
 			{
 				for each (o in xml.roof[0].tile) 
 				{
-					this.aboveTiles.setTile(o.@x / G.grid, o.@y / G.grid, (G.TILESET_NB_COLUMNS * (o.@ty/G.grid)) + (o.@tx/G.grid));
+					this.aboveTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, (G.TILESET_NB_COLUMNS * (o.@ty/G.TILE_SIZE)) + (o.@tx/G.TILE_SIZE));
 				}
 			}
 			

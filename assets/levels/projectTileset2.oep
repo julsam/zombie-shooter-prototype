@@ -1,0 +1,32 @@
+<project>
+
+	<name>zombie-shooter-prototype</name>
+	
+	<settings>
+		<defaultWidth>640</defaultWidth>
+		<defaultHeight>480</defaultHeight>
+		<maxWidth>4096</maxWidth>
+		<maxHeight>2048</maxHeight>
+		<minWidth>640</minWidth>
+		<minHeight>480</minHeight>
+		<workingDirectory>../gfx</workingDirectory>
+	</settings>
+	
+	<tilesets>
+		<tileset name="tileset" image="tileset2.png" tileWidth="16" tileHeight="16" />
+	</tilesets>
+	
+	<objects>
+		<object name="playerStart" image="playerStart.png" width="16" height="16" limit="1" />
+		<object name="fire" image="placeFeu.png" width="16" height="16" />
+		<object name="shadowSpot" image="placeShadowSpot.png" width="16" height="16" />
+	</objects>
+	
+	<layers>
+		<grid name="solids" gridSize="8" exportAsObjects="true" />
+		<tiles name="cave" gridSize="16" exportAsObjects="false" />
+		<objects name="objects" gridSize="16" />
+		<tiles name="roof" gridSize="16" />
+	</layers>
+	
+</project>
