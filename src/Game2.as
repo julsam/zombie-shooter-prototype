@@ -17,6 +17,7 @@ package
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
@@ -34,7 +35,6 @@ package
 		
 		override public function begin():void
 		{
-			
 			// level size
 			FP.width = G.windowWidth;
 			FP.height = G.windowHeight;
@@ -45,6 +45,7 @@ package
 			Input.define("Down", Key.DOWN, Key.S);
 			Input.define("Run", Key.SHIFT);
 			Input.define("Pause", Key.SPACE);
+			Input.define("SlowMotion", Key.A);
 			
 			add(G.level = new Level(Assets.TEST1));
 			
@@ -58,6 +59,11 @@ package
 		
 		override public function update():void
 		{
+			if (Input.pressed("SlowMotion"))
+			{
+				G.slowMotionActivated = !G.slowMotionActivated;
+				FP.rate = FP.rate == 1 ? 0.5 : 1;
+			}
 			if (Input.released("Pause"))
 			{
 				if (G.pause)

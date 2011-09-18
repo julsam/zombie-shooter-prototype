@@ -12,6 +12,7 @@ package
 			pause:Boolean = false,
 			restartLevel:Boolean = false,
 			lightingEnabled:Boolean = true,
+			slowMotionActivated:Boolean = false,
 			
 			player:Player,
 			camera:Camera,
