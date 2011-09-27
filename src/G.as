@@ -1,6 +1,7 @@
 package  
 {
 	import entities.Player;
+	import hud.HUD;
 	
 	import flash.utils.Dictionary;
 	
@@ -14,6 +15,7 @@ package
 			lightingEnabled:Boolean = true,
 			slowMotionActivated:Boolean = false,
 			
+			hud:HUD,
 			player:Player,
 			camera:Camera,
 			lighting:Lighting,

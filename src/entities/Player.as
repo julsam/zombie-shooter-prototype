@@ -48,6 +48,8 @@ package entities
 			
 			this.blink = new Blink(this.sprite, 2, 0.15);
 			
+			this.health = 250;
+			this.maxHealth = 250;
 			this.speed = this.normalSpeed = 75;
 			this.runningSpeed = 150;
 			
@@ -128,6 +130,12 @@ package entities
 			{
 				this.blink.setActive();
 				trace('Getting hurt!');
+				if (!this.invincible)
+				{
+					super.takeDamage(amountOfDamage);
+					var percentRemaining:Number = this.health / this.maxHealth * 100;
+					G.hud.healthBar.setHealth(percentRemaining);
+				}
 			}
 		}
 		

@@ -38,11 +38,10 @@ package entities
 			this.graphic = this.sprite;
 			sprite.centerOO();
 			
+			this.strength = 10;
 			this.speed = FP.rand(10) + 35 ;
 			this.health = 1;
 			this.childType = "Zombie";
-			
-			trace(this.width, height);
 		}
 		
 		override public function update():void

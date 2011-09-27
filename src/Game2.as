@@ -1,5 +1,6 @@
 package
 {	
+	import hud.HUD;
 	import Playtomic.Log;
 	
 	import entities.*;
@@ -57,6 +58,8 @@ package
 				add(G.lighting = new Lighting());
 			
 			G.level.load();
+			
+			add(G.hud = new HUD());
 			
 			//add(new Zombie(400, 200));
 			//add(new Zombie(300, 250));

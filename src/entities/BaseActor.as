@@ -85,7 +85,12 @@ package entities
 		
 		public function takeDamage(amountOfDamage:int=0):void
 		{
-			// Abtract
+			this.health = this.health - amountOfDamage < 0 ? 0 : this.health - amountOfDamage;
+		}
+		
+		public function heal(amountOfLife:int=0):void
+		{
+			this.health = this.health + amountOfLife > this.maxHealth ? this.maxHealth : this.health + amountOfLife;
 		}
 		
 		public function attack(actor:BaseActor):void
