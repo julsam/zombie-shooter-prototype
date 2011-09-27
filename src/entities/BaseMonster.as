@@ -4,9 +4,6 @@ package entities
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	
-	import net.flxpunk.FlxTween;
-	import net.flxpunk.FlxPath;
-	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -14,9 +11,16 @@ package entities
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
+	import net.flxpunk.FlxPath;
+	import net.flxpunk.FlxPathFinding;
+	import net.flxpunk.FlxTween;
+	
 	public class BaseMonster extends BaseActor
 	{
 		protected var timerFindPath:Number = 0;
+		protected var lastEyesightTarget:Point = new Point;
+		protected var target:Point = new Point;
+		protected var targetEntity:*;
 		
 		protected var image:Image;
 		protected var sprite:Spritemap;
@@ -43,10 +47,28 @@ package entities
 		
 		override public function update():void
 		{
+			if (this.alive)
+			{
+				updateRayPath();
+			}
+			super.update();
+		}
+		
+		public function updatePath():void
+		{
+			var path:FlxPath;
+			path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
+			if (path != null)
+			{
+				this.flx.followPath(path, this.speed);
+			}			
+		}
+		
+		public function updateTimedPath():void
+		{
 			this.timerFindPath += FP.elapsed;
 			if (this.timerFindPath > 0.5) // total duration before remove()
 			{
-				//TODO : find an other way, currently too slow with many entities
 				var path:FlxPath;
 				path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
 				if (path != null)
@@ -55,11 +77,96 @@ package entities
 				}
 				this.timerFindPath = 0;
 			}
-			
-			super.update();
 		}
 		
-		override protected function takeDamage(amountOfDamage:int=0):void
+		public function updateRayPath():void
+		{
+			if (G.level.pathFinding.ray(this.flx.getMidpoint(), G.player.flx.getMidpoint(), null, 1))
+			{
+				target = new Point(G.player.flx.getMidpoint().x, G.player.flx.getMidpoint().y);
+				targetEntity = G.player;
+				moveToPoint(G.player.flx.getMidpoint());
+				lastEyesightTarget = G.player.flx.getMidpoint();
+			}
+			else
+			{
+				target = new Point(lastEyesightTarget.x + this.width * 0.5, lastEyesightTarget.y + this.height * 0.5);
+				targetEntity = null;
+				moveToPoint(target);
+			}
+		}
+		
+		public function moveToPoint(p:Point):void
+		{
+			var _x:int = this.flx.getMidpoint().x;
+			var _y:int = this.flx.getMidpoint().y;
+			this.angle = FP.angle(_x, _y, int(p.x), int(p.y));
+			FP.angleXY(velocity, angle, this.speed * FP.elapsed);				
+			updateCollision();
+			if (this.targetReached())
+			{
+				if (this.targetEntity != null)
+				{
+					this.targetEntity.takeDamage(this.strength);
+				}
+				trace("target reached");
+			}
+		}
+		
+		public function targetReached():Boolean
+		{
+			var _x:int = this.flx.getMidpoint().x;
+			var _y:int = this.flx.getMidpoint().y;
+			
+			// distance before we start checking
+			var distance:Number = FP.distance(_x, _y, int( this.target.x), int( this.target.y));
+			if (distance > 16)
+			{
+				return false
+			}
+			else
+			{
+				if (this.targetEntity is Player && this.collideWith( this.targetEntity, this.x, this.y))
+					return true;
+				else if (this.targetEntity == null && this.collidePoint(_x, _y, this.target.x, this.target.y))
+					return true;
+				else
+					return false
+			}
+		}
+		
+		protected function updateCollision():void
+		{
+			this.x += this.velocity.x;
+			
+			if (collide("Solid", this.x + this.velocity.x, this.y))
+			{
+				if (FP.sign(this.velocity.x) > 0)
+				{
+					this.x += -this.velocity.x;
+				}
+				else
+				{
+					this.x -= this.velocity.x;
+				}
+			}
+			
+			this.y += this.velocity.y;
+			
+			if (collide("Solid", this.x, this.y + this.velocity.y))
+			{
+				if (FP.sign(this.velocity.y) > 0)
+				{
+					this.y += -this.velocity.y;
+				}
+				else
+				{
+					this.y -= this.velocity.y;
+				}
+			}			
+		}
+		
+		override public function takeDamage(amountOfDamage:int=0):void
 		{
 			this.health--;
 			
@@ -70,6 +177,12 @@ package entities
 				this.collidable = false;
 				this.alive = false;
 			}
+		}
+		
+		override protected function destroy():void
+		{
+			Game2.removeMonsterFromPathList(this);
+			super.destroy();
 		}
 		
 		public function dropSouls():void

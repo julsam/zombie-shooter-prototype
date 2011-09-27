@@ -25,9 +25,9 @@ package entities
 			this.x = x;
 			this.y = y;
 			
-			centerOrigin();
 			this.baseline = 10;
-			setHitbox(10, 10);
+			setHitbox(6, 6, 1, 2);
+			centerOrigin();
 			
 			this.sprite = new Spritemap(Assets.MONSTER1, 8, 8);
 			this.sprite.add("stand", [0]);
@@ -36,22 +36,24 @@ package entities
 			this.sprite.play("stand");
 			
 			this.graphic = this.sprite;
-			//sprite.centerOO();
+			sprite.centerOO();
 			
-			this.speed = FP.rand(10) + 55 ;
-			this.health = 10;
+			this.speed = FP.rand(10) + 15 ;
+			this.health = 1;
 			this.childType = "Zombie";
+			
+			trace(this.width, height);
 		}
 		
 		override public function update():void
-		{			
+		{
 			// if it's dead, on the floor, stand there for a few seconds with death animation
 			if (!this.alive && this.sprite.currentAnim == "death")
 			{
 				this.timer += FP.elapsed;
 				
 				// TODO queue list that contain entity to remove if too many
-				if (this.timer > 10) // total duration before remove()
+				if (this.timer > 1) // total duration before remove()
 				{
 					this.destroy();
 				}
@@ -83,7 +85,7 @@ package entities
 		
 		override protected function checkForDamage():void
 		{
-			var b:Bullet = Bullet(collide("Bullet", this.x - 4, this.y - 4));
+			var b:Bullet = Bullet(collide("Bullet", this.x, this.y));
 			if (b && !b.hasCollided)
 			{
 				this.takeDamage();

@@ -17,7 +17,8 @@ package
 			player:Player,
 			camera:Camera,
 			lighting:Lighting,
-			level:Level;
+			level:Level;			
+			//monsters:Vector.<*> = new Vector.<*>();
 		
 		public static const grid:int = 8;
 		public static const TILE_SIZE:int = 16;

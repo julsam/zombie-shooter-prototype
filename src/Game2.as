@@ -17,7 +17,6 @@ package
 	import net.flashpunk.masks.Grid;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
-	
 	import net.flxpunk.FlxEntity;
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
@@ -26,6 +25,7 @@ package
 	{
 		public var grid:Grid;
 		public var pf:FlxPathFinding;
+		public var iMonster:int = 0; // debug monster path queue
 		
 		private var timer:Number = 0;
 		
@@ -44,7 +44,8 @@ package
 			Input.define("Up", Key.UP, Key.Z);
 			Input.define("Down", Key.DOWN, Key.S);
 			Input.define("Run", Key.SHIFT);
-			Input.define("Pause", Key.SPACE);
+			Input.define("Shoot", Key.SPACE);
+			Input.define("Pause", Key.P);
 			Input.define("SlowMotion", Key.A);
 			
 			add(G.level = new Level(Assets.TEST1));
@@ -54,13 +55,14 @@ package
 			
 			G.level.load();
 			
-			add(new Zombie(400, 200));
-			add(new Zombie(200, 200));
-			for (var j:int = 0; j < 10; j++)
+			//add(new Zombie(400, 200));
+			//add(new Zombie(300, 250));
+			var z:*;
+			for (var j:int = 0; j < 50; j++)
 			{
-				//add(new Zombie(400, 32 + (j * 10)));
-			}
-			
+				add(z = new Zombie(FP.rand(FP.width), FP.rand(FP.height)));				
+				//G.monsters.push(z);
+			}			
 		}
 		
 		override public function update():void
@@ -91,6 +93,38 @@ package
 					_menu.update();
 				}
 			}
+			// if entity.onCamera()
+			/*
+			if (G.monsters.length > 3)
+			{	
+				if (iMonster >= G.monsters.length)
+					iMonster = 0;
+				G.monsters[iMonster].updateRayPath();
+				iMonster += 1;
+			}
+			else
+			{
+				if (iMonster >= G.monsters.length)
+					iMonster = 0;
+				G.monsters[iMonster].updateRayPath();
+				iMonster += 1;
+			}
+			*/
+			
+		}
+		
+		public static function removeMonsterFromPathList(m:BaseMonster):void
+		{
+			/*
+			for (var i:int = 0; i < G.monsters.length; i++)
+			{
+				if (m == G.monsters[i])
+				{
+					//G.monsters[i].removed = true;
+					G.monsters.splice(i, 1);
+				}
+			}
+			*/
 		}
 		
 		public function pause():void
@@ -109,12 +143,12 @@ package
 		
 		override public function focusGained():void
 		{
-			this.unpause();
+			//this.unpause();
 		}
 		
 		override public function focusLost():void
 		{
-			this.pause();
+			//this.pause();
 		}
 		
 		public function setEmittersActive(typeName:String, isActive:Boolean):void

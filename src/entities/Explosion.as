@@ -25,17 +25,19 @@ package entities
 			this.type = "Explosion";
 			
 			this.emitter = new Emitter(this.particle, 6, 6);
+			
 			this.emitter.newType('explode', [0, 0,0, 0, 1, 1,1, 1, 2, 2, 3, 3, 4, 5, 6]);
 			this.emitter.setColor('explode', 0xFF9900, 0xFFFF55, Ease.backOut);
 			this.emitter.setMotion('explode', 0, 10, 0.9, 360, 20, 0.8, Ease.expoOut);
 			//this.emitter.setAlpha("explode", 1, 0.5, Ease.circOut);
 			this.emitter.setGravity('explode', 0.1);
-			this.graphic = this.emitter;
+			
 			this.emitter.newType('explode2', [0, 0,0, 0, 1, 1,1, 1, 2, 2, 3, 3, 4, 5, 6]);
 			this.emitter.setColor('explode2', 0xFFFF00, 0xFFFFFF, Ease.backOut);
 			this.emitter.setMotion('explode2', 0, 0, 0.9, 360, 20, 0.8, Ease.expoOut);
 			//this.emitter.setAlpha("explode2", 1, 0.5, Ease.circOut);
 			this.emitter.setGravity('explode2', 0.1);
+			
 			this.graphic = this.emitter;
 			
 			explode(0, 0);

@@ -23,7 +23,7 @@
 	</objects>
 	
 	<layers>
-		<grid name="solids" gridSize="8" exportAsObjects="true" />
+		<grid name="solids" gridSize="8" exportAsObjects="true" drawGridSize="16" />
 		<tiles name="cave" gridSize="16" exportAsObjects="false" />
 		<objects name="objects" gridSize="16" />
 		<tiles name="roof" gridSize="16" />

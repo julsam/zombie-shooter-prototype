@@ -4,7 +4,7 @@ package
 	
 	public class Assets
 	{
-		[Embed(source = '../assets/levels/zlt3.oel',  mimeType = "application/octet-stream")] 
+		[Embed(source = '../assets/levels/zlt4.oel',  mimeType = "application/octet-stream")] 
 		public static const TEST1:Class;
 		
 		/*** GFX ***/

@@ -10,7 +10,6 @@ package entities
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
-	
 	import net.flxpunk.FlxTween;
 	
 	import utils.Blink;
@@ -41,22 +40,22 @@ package entities
 			
 			this.blink = new Blink(this.sprite, 2, 0.15);
 			
-			this.speed = this.normalSpeed = 100;
+			this.speed = this.normalSpeed = 75;
 			this.runningSpeed = 150;
-			this.baseline = 10;
-			this.setHitbox(6, 8, 3, 2);
-			this.graphic = this.sprite;
 			
 			this.type = "Player";
 			
 			this.sprite.centerOO();
+			this.baseline = 10;
+			this.setHitbox(6, 8, 3, 2);
+			this.graphic = this.sprite;
 			
 			this.flx = new FlxTween(this);
 			addTween(this.flx, true);
 		}
 		
 		override public function update():void
-		{
+		{			
 			// Shoot
 			if (Input.mousePressed || Input.check("Shoot"))
 			{
@@ -77,46 +76,40 @@ package entities
 			this.updateMovement();
 			this.updateCollision();			
 			
-			this.rotation = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
+			this.angle = FP.angle(this.x, this.y, FP.world.mouseX, FP.world.mouseY);
 			
 			this.updateAnimation();
 			
-			this.checkForDamage();
+			this.blink.update();
 			
 			super.update();
 		}
 		
-		override protected function checkForDamage():void
+		override public function takeDamage(amountOfDamage:int=0):void
 		{
-			this.blink.update();
-			
-			var e:Entity = FP.world.nearestToEntity("Monster", this, true);
-			if (e)
+			if (!this.blink.active)
 			{
-				if (!this.blink.active && this.collideWith(e, this.x, this.y))
-				{
-					this.blink.setActive();
-					trace('Getting hurt!');
-				}
+				this.blink.setActive();
+				trace('Getting hurt!');
 			}
 		}
 		
 		protected function updateAnimation():void
 		{
 			var dirAnim:String;
-			if (this.rotation >= 225 && this.rotation <= 315)
+			if (this.angle >= 225 && this.angle <= 315)
 			{
 				dirAnim = "Down";
 			}
-			if (this.rotation >= 315 || this.rotation <= 45)
+			if (this.angle >= 315 || this.angle <= 45)
 			{
 				dirAnim = "Right";
 			}
-			if (this.rotation >= 45 && this.rotation <= 135)
+			if (this.angle >= 45 && this.angle <= 135)
 			{
 				dirAnim = "Up";
 			}
-			if (this.rotation >= 135 && this.rotation <= 225)
+			if (this.angle >= 135 && this.angle <= 225)
 			{
 				dirAnim = "Left";
 			}

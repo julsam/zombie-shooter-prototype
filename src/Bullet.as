@@ -20,9 +20,11 @@ package
 		
 		public function Bullet(x:Number, y:Number, _direction:Point)
 		{
-			graphic	= new Image(new BitmapData(2, 2, false, 0xff0000));
-			setHitbox(3, 3);
+			var img:Image = new Image(new BitmapData(2, 2, false, 0xff0000));
+			graphic = img;
+			setHitbox(4, 4, 1, 1);
 			centerOrigin();
+			img.centerOO();
 			super(x, y, graphic);
 
 			direction = _direction;
