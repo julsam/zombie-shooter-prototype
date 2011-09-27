@@ -21,6 +21,8 @@ package
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
 	
+	import utils.Utils;
+	
 	public class Game2 extends World
 	{
 		public var grid:Grid;
@@ -85,6 +87,9 @@ package
 			if (!G.pause)
 			{
 				super.update();
+				
+				// Update Flash FX
+				Utils.flash.update();
 			}
 			else
 			{
@@ -160,6 +165,12 @@ package
 			{
 				el.emitter.active = isActive;
 			}
+		}
+		
+		override public function render():void
+		{
+			super.render();
+			Utils.flash.render();
 		}
 		
 	}
