@@ -5,17 +5,26 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	
+	import utils.Utils;
+	
+	/**
+	 * Virtual camera that manage FP.camera
+	 */	
 	public class Camera extends Entity
 	{
-		public var lookAt:Entity;
+		public var _lookAt:Entity;
 		public var movedX:Number;
 		
-		public function Camera(_lookAt:Entity) 
+		/**
+		 * Constructor.
+		 * @param	lookAt		The entity to follow. Example : the player
+		 */
+		public function Camera(lookAt:Entity) 
 		{
-			lookAt = _lookAt;
+			_lookAt = lookAt;
 			
-			x = lookAt.x - (FP.screen.width / 2);
-			y = lookAt.y - (FP.screen.height / 2);
+			x = _lookAt.x - (FP.screen.width / 2);
+			y = _lookAt.y - (FP.screen.height / 2);
 			
 			FP.camera.x = Math.floor(x);
 			FP.camera.y = Math.floor(y);
@@ -24,10 +33,10 @@ package
 		
 		override public function update():void
 		{	
-			var dist:Number = FP.distance(lookAt.x - (FP.screen.width / 2), lookAt.y - (FP.screen.height / 2), FP.camera.x, FP.camera.y);
+			var dist:Number = FP.distance(_lookAt.x - (FP.screen.width / 2), _lookAt.y - (FP.screen.height / 2), FP.camera.x, FP.camera.y);
 			var spd:Number = dist / 10;
 			
-			FP.stepTowards(this, lookAt.x - (FP.screen.width / 2), lookAt.y - (FP.screen.height / 2), spd);
+			FP.stepTowards(this, _lookAt.x - (FP.screen.width / 2), _lookAt.y - (FP.screen.height / 2), spd);
 			
 			FP.camera.x = x;
 			FP.camera.y = y;
@@ -36,6 +45,9 @@ package
 			if (FP.camera.x + FP.screen.width > FP.width) { FP.camera.x = FP.width - FP.screen.width; }
 			if (FP.camera.y < 0) { FP.camera.y = 0; }
 			if (FP.camera.y + FP.screen.height > FP.height) { FP.camera.y = FP.height - FP.screen.height; }
+			
+			// Update Quake FX
+			Utils.quake.update();
 		}		
 	}
 }

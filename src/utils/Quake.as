@@ -1,5 +1,7 @@
 package utils
 {
+	import flash.geom.Point;
+	
 	import net.flashpunk.FP;
 	
 	/**
@@ -12,6 +14,7 @@ package utils
 	{
 		protected var intensity:Number=0;	
 		protected var timer:Number=0;
+		protected var initialCameraPosition:Point = new Point;
 		
 		/**
 		 * Start quaking the screen!
@@ -21,6 +24,7 @@ package utils
 		 */		
 		public function start(intensity:Number=0.5, duration:Number=0.5):void
 		{
+			initialCameraPosition = new Point(FP.camera.x, FP.camera.y);
 			stop();
 			this.intensity = intensity * 0.05;
 			timer = duration;
@@ -31,8 +35,8 @@ package utils
 		 */		
 		public function stop():void
 		{
-			FP.screen.x = 0;
-			FP.screen.y = 0;
+			FP.camera.x = initialCameraPosition.x;
+			FP.camera.y = initialCameraPosition.y;
 			intensity = 0;
 			timer = 0;
 		}
@@ -51,8 +55,9 @@ package utils
 				}
 				else
 				{
-					FP.screen.x = (Math.random()*intensity*FP.width*2-intensity*FP.width)*0.5;
-					FP.screen.y = (Math.random()*intensity*FP.height*2-intensity*FP.height)*0.5;
+					FP.camera.x = initialCameraPosition.x + (Math.random()*intensity*FP.width*2-intensity*FP.width)*0.5;
+					FP.camera.y = initialCameraPosition.y + (Math.random()*intensity*FP.height*2-intensity*FP.height)*0.5;
+					trace(FP.camera.x, FP.camera.y);
 				}
 			}
 		}
