@@ -139,7 +139,7 @@ package entities
 			this.x += this.velocity.x;
 			
 			// monster
-			var e:Entity = this.collide("Monster", this.x + this.velocity.x, this.y) as Entity;
+			var e:Entity = this.collide("Monster", this.x, this.y) as Entity;
 			if (e)
 			{
 				if (this.x + this.width > e.x + e.width && !collide("Solid", this.x + 1, this.y))
@@ -175,7 +175,7 @@ package entities
 				{
 					this.y += 1;
 				}
-				else if (this.y + this.height > e.y + e.height && !collide("Solid", this.x, this.y - 1))
+				else if (this.y + this.height < e.y + e.height && !collide("Solid", this.x, this.y - 1))
 				{
 					this.y -= 1;
 				}
