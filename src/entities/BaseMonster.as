@@ -109,7 +109,6 @@ package entities
 				{
 					this.targetEntity.takeDamage(this.strength);
 				}
-				trace("target reached");
 			}
 		}
 		
@@ -139,7 +138,21 @@ package entities
 		{
 			this.x += this.velocity.x;
 			
-			if (collide("Solid", this.x + this.velocity.x, this.y))
+			// monster
+			var e:Entity = this.collide("Monster", this.x + this.velocity.x, this.y) as Entity;
+			if (e)
+			{
+				if (this.x + this.width > e.x + e.width && !collide("Solid", this.x + 1, this.y))
+				{
+					this.x += 1;
+				}
+				else if (this.x + this.width < e.x + e.width && !collide("Solid", this.x - 1, this.y))
+				{
+					this.x -= 1;
+				}
+			}
+			// wall
+			if (this.collide("Solid", this.x, this.y))
 			{
 				if (FP.sign(this.velocity.x) > 0)
 				{
@@ -153,7 +166,22 @@ package entities
 			
 			this.y += this.velocity.y;
 			
-			if (collide("Solid", this.x, this.y + this.velocity.y))
+			// monster
+			e = null;
+			e = this.collide("Monster", this.x, this.y) as Entity;			
+			if (e)
+			{
+				if (this.y + this.height > e.y + e.height && !collide("Solid", this.x, this.y + 1))
+				{
+					this.y += 1;
+				}
+				else if (this.y + this.height > e.y + e.height && !collide("Solid", this.x, this.y - 1))
+				{
+					this.y -= 1;
+				}
+			}
+			// wall
+			if (this.collide("Solid", this.x, this.y))
 			{
 				if (FP.sign(this.velocity.y) > 0)
 				{
@@ -163,7 +191,7 @@ package entities
 				{
 					this.y -= this.velocity.y;
 				}
-			}			
+			}	
 		}
 		
 		override public function takeDamage(amountOfDamage:int=0):void

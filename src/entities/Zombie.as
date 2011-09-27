@@ -38,7 +38,7 @@ package entities
 			this.graphic = this.sprite;
 			sprite.centerOO();
 			
-			this.speed = FP.rand(10) + 15 ;
+			this.speed = FP.rand(10) + 35 ;
 			this.health = 1;
 			this.childType = "Zombie";
 			

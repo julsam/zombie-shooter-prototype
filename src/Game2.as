@@ -46,6 +46,7 @@ package
 			Input.define("Run", Key.SHIFT);
 			Input.define("Shoot", Key.SPACE);
 			Input.define("Pause", Key.P);
+			Input.define("Mute", Key.M);
 			Input.define("SlowMotion", Key.A);
 			
 			add(G.level = new Level(Assets.TEST1));
@@ -60,9 +61,10 @@ package
 			var z:*;
 			for (var j:int = 0; j < 50; j++)
 			{
-				add(z = new Zombie(FP.rand(FP.width), FP.rand(FP.height)));				
+				add(z = new Zombie(FP.rand(FP.width), FP.rand(FP.height)));
+				//add(z = new Zombie(300, 250));
 				//G.monsters.push(z);
-			}			
+			}
 		}
 		
 		override public function update():void
@@ -109,8 +111,7 @@ package
 				G.monsters[iMonster].updateRayPath();
 				iMonster += 1;
 			}
-			*/
-			
+			*/					
 		}
 		
 		public static function removeMonsterFromPathList(m:BaseMonster):void

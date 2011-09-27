@@ -6,18 +6,26 @@ package entities
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Tween;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.tweens.misc.Alarm;
+	import net.flashpunk.tweens.misc.VarTween;
+	import net.flashpunk.utils.Ease;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flxpunk.FlxTween;
 	
 	import utils.Blink;
+	import utils.Utils;
 	
 	public class Player extends BaseActor
 	{
 		public var currentWeapon:BaseWeapon = null;
 		public var runningSpeed:Number;
+		
+		public var weaponFireLights:Vector.<Light> = new Vector.<Light>()
+		public var weaponFireLight:Light;
 		
 		public var sprite:Spritemap;
 		
@@ -55,12 +63,34 @@ package entities
 		}
 		
 		override public function update():void
-		{			
+		{
 			// Shoot
 			if (Input.mousePressed || Input.check("Shoot"))
 			{
 				SoundMgr.playSound(SoundMgr.sfx_pistol_shot);
+				trace(x, y, this.flx.getMidpoint());
 				FP.world.add(new Bullet(x, y, new Point(FP.world.mouseX, FP.world.mouseY)));
+				
+				// firelight, TODO: it should be in weapon class
+				if (G.lightingEnabled)
+				{
+					weaponFireLights.push(new Light(x, y, 1.5, 1));
+					G.lighting.addLight(weaponFireLights[weaponFireLights.length-1]);
+					
+					var v:VarTween = new VarTween(removeFireLight, Tween.ONESHOT);
+					v.tween(weaponFireLights[weaponFireLights.length-1], "scale", 0, 0.25, Ease.sineInOut);
+					FP.world.addTween(v, true);
+				}
+			}
+			
+			var l:int = weaponFireLights.length;
+			if (l > 0)
+			{
+				for (var i:int = 0; i < l; i++)
+				{
+					weaponFireLights[i].x = G.player.x;
+					weaponFireLights[i].y = G.player.y;
+				}
 			}
 			
 			// Run
@@ -83,6 +113,13 @@ package entities
 			this.blink.update();
 			
 			super.update();
+		}
+		
+		// TODO: should be in weapon class too
+		public function removeFireLight():void
+		{
+			G.lighting.removeLight(weaponFireLights[0]);
+			weaponFireLights.splice(0, 1);
 		}
 		
 		override public function takeDamage(amountOfDamage:int=0):void
