@@ -10,7 +10,6 @@ package entities
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
-	
 	import net.flxpunk.FlxPath;
 	import net.flxpunk.FlxPathFinding;
 	import net.flxpunk.FlxTween;
@@ -18,7 +17,7 @@ package entities
 	public class BaseMonster extends BaseActor
 	{
 		protected var timerFindPath:Number = 0;
-		protected var lastEyesightTarget:Point = new Point;
+		protected var lastEyesightTarget:Point;
 		protected var target:Point = new Point;
 		protected var targetEntity:*;
 		
@@ -32,6 +31,7 @@ package entities
 		public function BaseMonster(x:Number, y:Number)
 		{
 			super(x, y);
+			lastEyesightTarget = new Point(x, y);
 			
 			this.flx = new FlxTween(this);
 			addTween(this.flx, true);
@@ -81,6 +81,7 @@ package entities
 		
 		public function updateRayPath():void
 		{
+			// TODO:check if player position changed since last Ray
 			if (G.level.pathFinding.ray(this.flx.getMidpoint(), G.player.flx.getMidpoint(), null, 1))
 			{
 				target = new Point(G.player.flx.getMidpoint().x, G.player.flx.getMidpoint().y);
@@ -125,7 +126,7 @@ package entities
 			}
 			else
 			{
-				if (this.targetEntity is Player && this.collideWith( this.targetEntity, this.x, this.y))
+				if (this.targetEntity is Player && this.collideWith(this.targetEntity, this.x, this.y))
 					return true;
 				else if (this.targetEntity == null && this.collidePoint(_x, _y, this.target.x, this.target.y))
 					return true;
