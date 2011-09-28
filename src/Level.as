@@ -7,16 +7,16 @@ package
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Backdrop;
-	import net.flashpunk.graphics.Tilemap;
+	import net.flashpunk.graphics.Tilegroup;
 	import net.flashpunk.masks.Grid;
 	
 	import net.flxpunk.FlxPathFinding;
 	
 	public class Level extends Entity
 	{
-		public var aboveTiles:Tilemap;
-		public var levelTiles:Tilemap;
-		public var belowTiles:Tilemap;
+		public var aboveTiles:Tilegroup;
+		public var levelTiles:Tilegroup;
+		public var belowTiles:Tilegroup;
 		
 		public var grid:Grid;
 		public var pathFinding:FlxPathFinding;
@@ -42,10 +42,10 @@ package
 			this.grid = new Grid(FP.width, FP.height, G.grid, G.grid);
 		}
 		
-		private function createTilemap(tilemap:Tilemap, layer:int):Tilemap
+		private function createTilemap(tilemap:Tilegroup, layer:int):Tilegroup
 		{
 			var tilemapEntity:Entity = new Entity();
-			tilemap = new Tilemap(Assets.TILESET, FP.width, FP.height, G.TILE_SIZE, G.TILE_SIZE);
+			tilemap = new Tilegroup(Assets.TILESET, FP.width, FP.height, G.TILE_SIZE, G.TILE_SIZE);
 			tilemapEntity.graphic = tilemap;
 			tilemapEntity.layer = layer;
 			FP.world.add(tilemapEntity);
@@ -65,7 +65,7 @@ package
 			// Tiles Above
 			for each (o in xml.cave[0].tile)
 			{
-				this.levelTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, (G.TILESET_NB_COLUMNS * (o.@ty/G.TILE_SIZE)) + (o.@tx/G.TILE_SIZE));
+				this.levelTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, o.@tx / G.TILE_SIZE, o.@ty / G.TILE_SIZE);
 			}
 			
 			// Solids
@@ -91,7 +91,7 @@ package
 			{
 				for each (o in xml.roof[0].tile) 
 				{
-					this.aboveTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, (G.TILESET_NB_COLUMNS * (o.@ty/G.TILE_SIZE)) + (o.@tx/G.TILE_SIZE));
+					this.aboveTiles.setTile(o.@x / G.TILE_SIZE, o.@y / G.TILE_SIZE, o.@tx / G.TILE_SIZE, o.@ty / G.TILE_SIZE);
 				}
 			}
 			
