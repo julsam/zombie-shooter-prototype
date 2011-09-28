@@ -43,9 +43,8 @@ package
 			
 			moveBy(velocity.x, velocity.y);
 			
-			// if Bullet goes out of the game // TODO: if out of the screen
-			if (x > G.windowWidth + 100	|| y > G.windowHeight + 100 
-				|| x < -100 || y < -100)
+			if (x < -100 || x > FP.camera.x + FP.screen.width + 100
+				|| y > FP.camera.y + FP.screen.height + 100 || y < -100)
 			{
 				destroy();
 			}
