@@ -1,14 +1,16 @@
 package hud
 {
 	import net.flashpunk.Entity;
-    import net.flashpunk.FP;
-    import net.flashpunk.graphics.Image;
-    import net.flashpunk.utils.Input;
-    import net.flashpunk.utils.Key;
+	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Graphiclist;
+	import net.flashpunk.graphics.Image;
+	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
     
     public class HealthBarEntity extends Entity
     {
-        public var bar:Image = Image.createRect(100, 10, 0xFF0000);
+        public var bar:Image = new Image(Assets.HEALTHBAR);
+		public var placeholder:Image = new Image(Assets.HEALTHBAR_PLACEHOLDER);
 		protected var xOffset:Number;
 		protected var yOffset:Number;
         
@@ -18,7 +20,9 @@ package hud
 			this.yOffset = yOffset;
 			layer = HUD.HUD_LAYER;
 			
-            this.graphic = bar;
+			bar.x = 3;
+			bar.y = 3;
+            this.graphic = new Graphiclist(placeholder, bar);
 			
 			graphic.scrollX = 0;
 			graphic.scrollY = 0;

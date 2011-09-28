@@ -30,6 +30,12 @@ package
 		[Embed(source = '../assets/gfx/explosion.png')] 
 		public static const EXPLOSION:Class;
 		
+		[Embed(source = '../assets/gfx/healthBar2.png')] 
+		public static const HEALTHBAR:Class;
+		
+		[Embed(source = '../assets/gfx/healthBarPlaceHolder2.png')] 
+		public static const HEALTHBAR_PLACEHOLDER:Class;
+		
 		/*** SFX ***/
 		
 		[Embed(source="../assets/sfx/AlienShooter/pistol_shot.mp3")]

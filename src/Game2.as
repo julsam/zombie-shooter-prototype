@@ -64,7 +64,7 @@ package
 			//add(new Zombie(400, 200));
 			//add(new Zombie(300, 250));
 			var z:*;
-			for (var j:int = 0; j < 50; j++)
+			for (var j:int = 0; j < 10; j++)
 			{
 				add(z = new Zombie(FP.rand(FP.width), FP.rand(FP.height)));
 				//add(z = new Zombie(300, 250));
