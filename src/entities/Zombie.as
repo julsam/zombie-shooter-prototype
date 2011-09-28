@@ -41,6 +41,7 @@ package entities
 			this.strength = 10;
 			this.speed = FP.rand(10) + 35 ;
 			this.health = 1;
+			this.maxHealth = 1;
 			this.childType = "Zombie";
 		}
 		
@@ -52,7 +53,7 @@ package entities
 				this.timer += FP.elapsed;
 				
 				// TODO queue list that contain entity to remove if too many
-				if (this.timer > 1) // total duration before remove()
+				if (this.timer > 10) // total duration before remove()
 				{
 					this.destroy();
 				}
@@ -84,12 +85,15 @@ package entities
 		
 		override protected function checkForDamage():void
 		{
-			var b:Bullet = Bullet(collide("Bullet", this.x, this.y));
-			if (b && !b.hasCollided)
+			if (this.alive)
 			{
-				this.takeDamage();
-				b.hasCollided = true;
-				b.destroy();
+				var b:Bullet = Bullet(collide("Bullet", this.x, this.y));
+				if (b && !b.hasCollided)
+				{
+					this.takeDamage(b.damage);
+					b.hasCollided = true;
+					b.destroy();
+				}
 			}
 		}
 	}

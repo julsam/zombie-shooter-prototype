@@ -15,6 +15,7 @@ package
 		private var velocity:Point = new Point;
 		private var speed:Point = new Point(SPEED, SPEED);
 		private var angle:Number;
+		public var damage:int = 1;
 		
 		public var hasCollided:Boolean = false; // if has collide, it don't make any more damage to monsters
 		

@@ -28,8 +28,8 @@ package entities
 		// attributes
 		protected var speed:Number;
 		protected var normalSpeed:Number;
-		protected var health:int;
-		protected var maxHealth:int;
+		protected var health:int = 1;
+		protected var maxHealth:int = 1;
 		protected var mana:int;
 		protected var maxMana:int;
 		protected var strength:int;
@@ -83,7 +83,7 @@ package entities
 			// Abtract
 		}
 		
-		public function takeDamage(amountOfDamage:int=0):void
+		public function takeDamage(amountOfDamage:int):void
 		{
 			this.health = this.health - amountOfDamage < 0 ? 0 : this.health - amountOfDamage;
 		}

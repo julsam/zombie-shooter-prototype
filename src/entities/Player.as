@@ -124,7 +124,7 @@ package entities
 			weaponFireLights.splice(0, 1);
 		}
 		
-		override public function takeDamage(amountOfDamage:int=0):void
+		override public function takeDamage(amountOfDamage:int):void
 		{
 			if (!this.blink.active)
 			{

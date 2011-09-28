@@ -47,6 +47,12 @@ package entities
 		
 		override public function update():void
 		{
+			// TODO
+			// if not onScreen + ~100:
+			//     this.visible = false;
+			//     this.collidable = false;
+			//     return;
+			
 			if (this.alive)
 			{
 				updateRayPath();
@@ -102,8 +108,8 @@ package entities
 			var _x:int = this.flx.getMidpoint().x;
 			var _y:int = this.flx.getMidpoint().y;
 			this.angle = FP.angle(_x, _y, int(p.x), int(p.y));
-			FP.angleXY(velocity, angle, this.speed * FP.elapsed);				
-			updateCollision();
+			FP.angleXY(this.velocity, this.angle, this.speed * FP.elapsed);				
+			this.updateCollision();
 			if (this.targetReached())
 			{
 				if (this.targetEntity != null)
@@ -139,7 +145,7 @@ package entities
 		{
 			this.x += this.velocity.x;
 			
-			// monster
+			// monster x
 			var e:Entity = this.collide("Monster", this.x, this.y) as Entity;
 			if (e)
 			{
@@ -152,7 +158,7 @@ package entities
 					this.x -= 1;
 				}
 			}
-			// wall
+			// wall x
 			if (this.collide("Solid", this.x, this.y))
 			{
 				if (FP.sign(this.velocity.x) > 0)
@@ -167,7 +173,7 @@ package entities
 			
 			this.y += this.velocity.y;
 			
-			// monster
+			// monster y
 			e = null;
 			e = this.collide("Monster", this.x, this.y) as Entity;			
 			if (e)
@@ -181,7 +187,7 @@ package entities
 					this.y -= 1;
 				}
 			}
-			// wall
+			// wall y
 			if (this.collide("Solid", this.x, this.y))
 			{
 				if (FP.sign(this.velocity.y) > 0)
@@ -195,13 +201,13 @@ package entities
 			}	
 		}
 		
-		override public function takeDamage(amountOfDamage:int=0):void
+		override public function takeDamage(amountOfDamage:int):void
 		{
-			this.health--;
+			super.takeDamage(amountOfDamage);
 			
 			FP.world.add(new Explosion(this.x, this.y));
 			
-			if (health <= 0)
+			if (this.health <= 0)
 			{
 				this.collidable = false;
 				this.alive = false;
