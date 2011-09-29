@@ -16,6 +16,7 @@ package
 		private var speed:Point = new Point(SPEED, SPEED);
 		private var angle:Number;
 		public var damage:int = 1;
+		protected var justSpawn:Boolean = true; // if the bullet just spawned, will be false after first update()
 		
 		public var hasCollided:Boolean = false; // if has collide, it don't make any more damage to monsters
 		
@@ -36,6 +37,14 @@ package
 		
 		override public function update():void
 		{
+			// the first time the bullet appears, it should be at it's spawn point, so we don't move it on first update()
+			if (this.justSpawn)
+			{
+				this.justSpawn = !this.justSpawn;
+				super.update();
+				return;
+			}
+			
 			FP.angleXY(velocity, angle, SPEED * FP.elapsed);
 			
 			//x += speed.x * FP.elapsed * velocity.x;
