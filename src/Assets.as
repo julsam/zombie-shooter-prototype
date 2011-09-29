@@ -18,6 +18,9 @@ package
 		[Embed(source = '../assets/gfx/player.png')] 
 		public static const PLAYER:Class;
 		
+		[Embed(source = '../assets/gfx/player-test.PNG')] 
+		public static const PLAYERTEST:Class;
+		
 		[Embed(source = '../assets/gfx/actors/monster1.png')] 
 		public static const MONSTER1:Class;
 		

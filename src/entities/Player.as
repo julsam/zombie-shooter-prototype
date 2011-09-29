@@ -34,17 +34,30 @@ package entities
 			this.y = y;
 			this.velocity = new Point(0, 0);
 			
+			
 			this.sprite = new Spritemap(Assets.PLAYER, 11, 16);
 			this.sprite.add("standDown", [0]);
-			this.sprite.add("standRight", [8]);
-			this.sprite.add("standUp", [6]);
-			this.sprite.add("standLeft", [10]);
+			this.sprite.add("standRight", [2]);
+			this.sprite.add("standUp", [1]);
+			this.sprite.add("standLeft", [3]);
 			this.sprite.add("walkDown", [4, 0, 5, 0], 7, true);
 			this.sprite.add("walkUp", [6, 1, 7, 1], 7, true);
 			this.sprite.add("walkRight", [8, 2, 9, 2], 7, true);
 			this.sprite.add("walkLeft", [10, 3, 11, 3], 7, true);
 			this.sprite.play("standDown");
+			/*
+			this.sprite = new Spritemap(Assets.PLAYERTEST, 34, 64);
+			this.sprite.add("standDown", [0]);
+			this.sprite.add("standRight", [6]);
+			this.sprite.add("standUp", [4]);
+			this.sprite.add("standLeft", [2]);
 			
+			this.sprite.add("standDownLeft", [1]);
+			this.sprite.add("standUpLeft", [3]);
+			this.sprite.add("standUpRight", [5]);
+			this.sprite.add("standDownRight", [7]);
+			this.sprite.play("standDown");
+			*/
 			this.blink = new Blink(this.sprite, 2, 0.15);
 			
 			this.health = 250;
@@ -157,6 +170,40 @@ package entities
 			{
 				dirAnim = "Left";
 			}
+			/*
+			if (this.angle >= 202 && this.angle <= 247)
+			{
+				dirAnim = "DownLeft";
+			}
+			if (this.angle >= 247 && this.angle <= 292)
+			{
+				dirAnim = "Down";
+			}
+			if (this.angle >= 292 && this.angle <= 337)
+			{
+				dirAnim = "DownRight";
+			}
+			if (this.angle >= 337 || this.angle <= 22)
+			{
+				dirAnim = "Right";
+			}
+			if (this.angle >= 22 && this.angle <= 67)
+			{
+				dirAnim = "UpRight";
+			}
+			if (this.angle >= 67 && this.angle <= 112)
+			{
+				dirAnim = "Up";
+			}
+			if (this.angle >= 112 && this.angle <= 157)
+			{
+				dirAnim = "UpLeft";
+			}
+			if (this.angle >= 157 && this.angle <= 202)
+			{
+				dirAnim = "Left";
+			}
+			*/
 			
 			if (Input.check("Up") || Input.check("Down") || Input.check("Left") || Input.check("Right"))
 			{
