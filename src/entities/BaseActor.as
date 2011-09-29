@@ -28,6 +28,7 @@ package entities
 		// attributes
 		protected var speed:Number;
 		protected var normalSpeed:Number;
+		protected var runningSpeed:Number;
 		protected var health:int = 1;
 		protected var maxHealth:int = 1;
 		protected var mana:int;
@@ -39,6 +40,7 @@ package entities
 		protected var alive:Boolean = true;
 		protected var invincible:Boolean = false;
 		protected var burning:Boolean = false;
+		protected var stunned:Number;             // the amount of time the entity is stunned	
 		
 		public var angle:Number = 0;
 		protected var velocity:Point = new Point();

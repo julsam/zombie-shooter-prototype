@@ -39,7 +39,8 @@ package entities
 			sprite.centerOO();
 			
 			this.strength = 10;
-			this.speed = FP.rand(10) + 35 ;
+			this.runningSpeed = FP.rand(10) + 35;
+			this.normalSpeed = FP.rand(10) + 15;
 			this.health = 1;
 			this.maxHealth = 1;
 			this.childType = "Zombie";

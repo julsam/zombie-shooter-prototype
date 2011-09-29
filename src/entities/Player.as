@@ -22,7 +22,6 @@ package entities
 	public class Player extends BaseActor
 	{
 		public var currentWeapon:BaseWeapon = null;
-		public var runningSpeed:Number;
 		
 		public var weaponFireLights:Vector.<Light> = new Vector.<Light>()
 		public var weaponFireLight:Light;

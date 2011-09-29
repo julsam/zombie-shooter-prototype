@@ -16,25 +16,31 @@ package entities
 	
 	public class BaseMonster extends BaseActor
 	{
+		static public const RANDOMWALK:int = 0;          // aimless walk, when target reached && targetEntity == null
+		static public const FOLLOWTARGET:int = 1;        // hunt target, when targetEntity != null
+		static public const GOTOLASTEYESIGHT:int = 2;    // reach target, when target != null && targetEntity == null
+		static public const GOTOPOSITION:int = 3;        // go to a position, without worrying about things around
+		protected var behavior:int = RANDOMWALK;
+		
 		protected var timerFindPath:Number = 0;
-		protected var lastEyesightTarget:Point;
-		protected var target:Point = new Point;
-		protected var targetEntity:*;
+		protected var destination:* = new Point;    // position
+		protected var currentTarget:*;                   // entity
+		protected var targetEntity:*;                   // the kind of target to... target
+		public    var targetVisibility:Boolean = false;	// if the target is visible, updated each frame
 		
 		protected var image:Image;
 		protected var sprite:Spritemap;
 		
 		protected var MonsterID:int; // unique ID
-		protected var childType:String;
-		protected var stunned:Number; // the amount of time the entity is stunned		
+		protected var childType:String;	
 		
 		public function BaseMonster(x:Number, y:Number)
 		{
 			super(x, y);
-			lastEyesightTarget = new Point(x, y);
+			this.destination = new Point(x, y);
 			
 			this.flx = new FlxTween(this);
-			addTween(this.flx, true);
+			this.addTween(this.flx, true);
 			
 			// without this 2 params the entity behaviour 
 			// is completely fucked when it have no more
@@ -52,15 +58,91 @@ package entities
 			//     this.visible = false;
 			//     this.collidable = false;
 			//     return;
+			// if very far, remove this;
 			
 			if (this.alive)
 			{
-				updateRayPath();
+				this.targetVisibility = this.isTargetVisible();
+				
+				// target is visible
+				if (this.targetVisibility == true)
+				{
+					this.behavior = FOLLOWTARGET;
+					this.speed = this.runningSpeed;
+					this.currentTarget = G.player;
+					this.destination = G.player.flx.getMidpoint();
+					this.moveToPoint(this.destination);
+					if (this.targetReached())
+					{
+						this.attack(this.currentTarget);
+					}
+				}
+				// target not visible but moving along path to the last place it saw it
+				else if (this.destination != null)
+				{
+					this.behavior = GOTOLASTEYESIGHT;
+					this.speed = this.runningSpeed;
+					this.currentTarget = null;
+					this.moveToPoint(this.destination);
+					if (this.targetReached())
+					{
+						this.destination = null;
+					}
+				}
+				// walking around
+				else if (this.destination == null)
+				{
+					this.behavior = RANDOMWALK;
+					this.speed = this.normalSpeed;
+					this.randomWalk();
+				}
 			}
 			super.update();
 		}
 		
-		public function updatePath():void
+		// CPU intensive, do not use it too much
+		public function isTargetVisible():Boolean
+		{
+			// TODO : could be cool to check orientation of the entity
+			// and activate only if it's in his view area
+			return G.level.pathFinding.ray(this.flx.getMidpoint(), G.player.flx.getMidpoint(), null, 1);
+		}
+		
+		public function targetReached():Boolean
+		{
+			var _x:int = this.flx.getMidpoint().x;
+			var _y:int = this.flx.getMidpoint().y;
+			
+			// distance before we start checking
+			var minimalDistance:Number = 16;
+			var distance:Number = FP.distance(_x, _y, int( this.destination.x), int( this.destination.y));
+			if (distance <= minimalDistance)
+			{
+				if (this.currentTarget != null && this.collideWith(this.currentTarget, this.x, this.y))
+					return true;
+				else if (this.currentTarget == null && this.collidePoint(_x, _y, this.destination.x, this.destination.y))
+					return true;
+			}
+			return false;
+		}
+		
+		public function randomWalk():void
+		{
+			
+		}
+		
+		// Simple movement
+		public function moveToPoint(p:Point):void
+		{
+			var _x:int = this.flx.getMidpoint().x;
+			var _y:int = this.flx.getMidpoint().y;
+			this.angle = FP.angle(_x, _y, int(p.x), int(p.y));
+			FP.angleXY(this.velocity, this.angle, this.speed * FP.elapsed);				
+			this.updateCollision();
+		}
+		
+		// A Star
+		public function updateFindPath():void
 		{
 			var path:FlxPath;
 			path = G.level.pathFinding.findPath(this.flx.getMidpoint(), G.player.flx.getMidpoint(), true);
@@ -70,7 +152,8 @@ package entities
 			}			
 		}
 		
-		public function updateTimedPath():void
+		// A Star
+		public function updateTimedFindPath():void
 		{
 			this.timerFindPath += FP.elapsed;
 			if (this.timerFindPath > 0.5) // total duration before remove()
@@ -82,62 +165,6 @@ package entities
 					this.flx.followPath(path, this.speed);
 				}
 				this.timerFindPath = 0;
-			}
-		}
-		
-		public function updateRayPath():void
-		{
-			// TODO:check if player position changed since last Ray
-			if (G.level.pathFinding.ray(this.flx.getMidpoint(), G.player.flx.getMidpoint(), null, 1))
-			{
-				target = new Point(G.player.flx.getMidpoint().x, G.player.flx.getMidpoint().y);
-				targetEntity = G.player;
-				moveToPoint(G.player.flx.getMidpoint());
-				lastEyesightTarget = G.player.flx.getMidpoint();
-			}
-			else
-			{
-				target = new Point(lastEyesightTarget.x + this.width * 0.5, lastEyesightTarget.y + this.height * 0.5);
-				targetEntity = null;
-				moveToPoint(target);
-			}
-		}
-		
-		public function moveToPoint(p:Point):void
-		{
-			var _x:int = this.flx.getMidpoint().x;
-			var _y:int = this.flx.getMidpoint().y;
-			this.angle = FP.angle(_x, _y, int(p.x), int(p.y));
-			FP.angleXY(this.velocity, this.angle, this.speed * FP.elapsed);				
-			this.updateCollision();
-			if (this.targetReached())
-			{
-				if (this.targetEntity != null)
-				{
-					this.targetEntity.takeDamage(this.strength);
-				}
-			}
-		}
-		
-		public function targetReached():Boolean
-		{
-			var _x:int = this.flx.getMidpoint().x;
-			var _y:int = this.flx.getMidpoint().y;
-			
-			// distance before we start checking
-			var distance:Number = FP.distance(_x, _y, int( this.target.x), int( this.target.y));
-			if (distance > 16)
-			{
-				return false
-			}
-			else
-			{
-				if (this.targetEntity is Player && this.collideWith(this.targetEntity, this.x, this.y))
-					return true;
-				else if (this.targetEntity == null && this.collidePoint(_x, _y, this.target.x, this.target.y))
-					return true;
-				else
-					return false
 			}
 		}
 		
@@ -199,6 +226,11 @@ package entities
 					this.y -= this.velocity.y;
 				}
 			}	
+		}
+		
+		override public function attack(actor:BaseActor):void
+		{
+			actor.takeDamage(this.strength)
 		}
 		
 		override public function takeDamage(amountOfDamage:int):void
