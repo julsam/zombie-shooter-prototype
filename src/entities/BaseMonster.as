@@ -3,6 +3,7 @@ package entities
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
+	import net.flashpunk.tweens.misc.Alarm;
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
@@ -16,16 +17,22 @@ package entities
 	
 	public class BaseMonster extends BaseActor
 	{
-		static public const RANDOMWALK:int = 0;          // aimless walk, when target reached && targetEntity == null
-		static public const FOLLOWTARGET:int = 1;        // hunt target, when targetEntity != null
-		static public const GOTOLASTEYESIGHT:int = 2;    // reach target, when target != null && targetEntity == null
-		static public const GOTOPOSITION:int = 3;        // go to a position, without worrying about things around
-		protected var behavior:int = RANDOMWALK;
+		static public const STAND:int = 0;            // aimless walk, when target reached && targetEntity == null
+		static public const RANDOMWALK:int = 1;       // aimless walk, when target reached && targetEntity == null
+		static public const FOLLOWTARGET:int = 2;     // hunt target, when targetEntity != null
+		static public const GOTOLASTEYESIGHT:int = 3; // reach target, when target != null && targetEntity == null
+		static public const GOTOPOSITION:int = 4;     // go to a position, without worrying about things around
+		protected var behavior:int;
+		
+		protected var _walkAlarm:Alarm;                   // alarm that swap STAND and RANDOMWALK
+		private   var _direction:Point = new Point(0, 0); // store the direction when randomly walking around
+		private   var _witnessPosition:Point;             // used to check if blocked in GOTOLASTEYESIGHT
+		private   var _witnessPositionTimer:Number = 0;   // used to check if blocked in GOTOLASTEYESIGHT
 		
 		protected var timerFindPath:Number = 0;
-		protected var destination:* = new Point;    // position
-		protected var currentTarget:*;                   // entity
-		protected var targetEntity:*;                   // the kind of target to... target
+		protected var destination:* = new Point;        // destination's position
+		protected var currentTarget:*;                  // the current entity targeted
+		protected var targetEntity:*;                   // the kind of target to... target e.g : the player
 		public    var targetVisibility:Boolean = false;	// if the target is visible, updated each frame
 		
 		protected var image:Image;
@@ -36,6 +43,8 @@ package entities
 		
 		public function BaseMonster(x:Number, y:Number)
 		{
+			this.behavior = FP.choose(STAND, RANDOMWALK);
+			this._witnessPosition = new Point(x, y);
 			super(x, y);
 			this.destination = new Point(x, y);
 			
@@ -68,6 +77,11 @@ package entities
 				if (this.targetVisibility == true)
 				{
 					this.behavior = FOLLOWTARGET;
+					if (this._walkAlarm)
+					{
+						this._walkAlarm.cancel();
+						this._walkAlarm = null;
+					}
 					this.speed = this.runningSpeed;
 					this.currentTarget = G.player;
 					this.destination = G.player.flx.getMidpoint();
@@ -81,6 +95,11 @@ package entities
 				else if (this.destination != null)
 				{
 					this.behavior = GOTOLASTEYESIGHT;
+					if (this._walkAlarm)
+					{
+						this._walkAlarm.cancel();
+						this._walkAlarm = null;
+					}
 					this.speed = this.runningSpeed;
 					this.currentTarget = null;
 					this.moveToPoint(this.destination);
@@ -88,20 +107,75 @@ package entities
 					{
 						this.destination = null;
 					}
+					
+					this._witnessPositionTimer += FP.elapsed;
+					if (this._witnessPositionTimer > 1) // check if blocked
+					{
+						// if the difference between the distance from the target at this moment,
+						// and the distance 2 seconds ago is < 2, we conclude the entity is
+						// kind of blocked, so the behavior is changed
+						if (FP.distance(this.x, this.y, this._witnessPosition.x, this._witnessPosition.y) < 2)
+						{
+							this._witnessPositionTimer = 0;
+							this.destination = null; // set behavior to RANDOMWALK
+							trace("blocked");
+						}
+						else 
+						{
+							this._witnessPosition = new Point(this.x, this.y);
+							this._witnessPositionTimer = 0;
+						}
+					}
 				}
 				// walking around
 				else if (this.destination == null)
 				{
-					this.behavior = RANDOMWALK;
 					this.speed = this.normalSpeed;
-					this.randomWalk();
+					
+					if (this._walkAlarm == null)
+					{
+						this._walkAlarm = FP.alarm(2.5, swapWalkBehavior, LOOPING);
+					}
+					if (this.behavior == STAND)
+					{						
+					}
+					else if (this.behavior == RANDOMWALK)
+					{
+						this.randomWalk();
+					}
 				}
 			}
 			super.update();
 		}
 		
+		protected function randomWalk():void
+		{
+			this.velocity.x = this.normalSpeed * FP.elapsed * this._direction.x;
+			this.velocity.y = this.normalSpeed * FP.elapsed * this._direction.y;
+			
+			this.updateCollision();
+		}
+		
+		protected function randomDirection():Point
+		{
+			return new Point(FP.choose(-1, 0, 1), FP.choose(-1, 0, 1));
+		}
+		
+		protected function swapWalkBehavior():void
+		{
+			if (this.behavior == RANDOMWALK)
+			{
+				this.behavior = STAND;
+			}
+			else
+			{
+				this._direction = randomDirection();
+				this.behavior = RANDOMWALK;
+			}
+		}
+		
 		// CPU intensive, do not use it too much
-		public function isTargetVisible():Boolean
+		protected function isTargetVisible():Boolean
 		{
 			// TODO : could be cool to check orientation of the entity
 			// and activate only if it's in his view area
@@ -126,18 +200,13 @@ package entities
 			return false;
 		}
 		
-		public function randomWalk():void
-		{
-			
-		}
-		
 		// Simple movement
 		public function moveToPoint(p:Point):void
 		{
 			var _x:int = this.flx.getMidpoint().x;
 			var _y:int = this.flx.getMidpoint().y;
 			this.angle = FP.angle(_x, _y, int(p.x), int(p.y));
-			FP.angleXY(this.velocity, this.angle, this.speed * FP.elapsed);				
+			FP.angleXY(this.velocity, this.angle, this.speed * FP.elapsed);
 			this.updateCollision();
 		}
 		
@@ -170,21 +239,21 @@ package entities
 		
 		protected function updateCollision():void
 		{
-			this.x += this.velocity.x;
-			
+			this.x += this.velocity.x;	
+
 			// monster x
 			var e:Entity = this.collide("Monster", this.x, this.y) as Entity;
 			if (e)
 			{
-				if (this.x + this.width > e.x + e.width && !collide("Solid", this.x + 1, this.y))
+				if (this.x + this.width >= e.x + e.width && !collide("Solid", this.x + this.speed * FP.elapsed, this.y))
 				{
-					this.x += 1;
+					this.x += this.speed * FP.elapsed;
 				}
-				else if (this.x + this.width < e.x + e.width && !collide("Solid", this.x - 1, this.y))
+				else if (this.x + this.width < e.x + e.width && !collide("Solid", this.x - this.speed * FP.elapsed, this.y))
 				{
-					this.x -= 1;
+					this.x -= this.speed * FP.elapsed;
 				}
-			}
+			}			
 			// wall x
 			if (this.collide("Solid", this.x, this.y))
 			{
@@ -202,16 +271,16 @@ package entities
 			
 			// monster y
 			e = null;
-			e = this.collide("Monster", this.x, this.y) as Entity;			
+			e = this.collide("Monster", this.x, this.y) as Entity;
 			if (e)
 			{
-				if (this.y + this.height > e.y + e.height && !collide("Solid", this.x, this.y + 1))
+				if (this.y + this.height >= e.y + e.height && !collide("Solid", this.x, this.y + this.speed * FP.elapsed))
 				{
-					this.y += 1;
+					this.y += this.speed * FP.elapsed;
 				}
-				else if (this.y + this.height < e.y + e.height && !collide("Solid", this.x, this.y - 1))
+				else if (this.y + this.height < e.y + e.height && !collide("Solid", this.x, this.y - this.speed * FP.elapsed))
 				{
-					this.y -= 1;
+					this.y -= this.speed * FP.elapsed;
 				}
 			}
 			// wall y
@@ -225,7 +294,7 @@ package entities
 				{
 					this.y -= this.velocity.y;
 				}
-			}	
+			}
 		}
 		
 		override public function attack(actor:BaseActor):void

@@ -15,8 +15,11 @@ package
 	{
 		public function Main():void 
 		{
-			super(320, 240, 60, false);
-			//super(213, 160, 60, false);
+			super(320, 240, 60, false);   // 640x480 x2
+			//super(213, 160, 60, false); // 640x480 x3
+			
+			//super(400, 300, 60, false); // 800x600 x2
+			//super(266, 200, 60, false); // 800x600 x3
 		}
 		
 		override public function init():void
