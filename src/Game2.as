@@ -158,6 +158,9 @@ package
 		override public function focusLost():void
 		{
 			//this.pause();
+			
+			// Fix sticking keys problem when focus is lost
+			Input.clear();
 		}
 		
 		public function setEmittersActive(typeName:String, isActive:Boolean):void
